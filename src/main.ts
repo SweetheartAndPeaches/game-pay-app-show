@@ -31,7 +31,6 @@ function initBackgroundAnimation(): void {
   let particles: TriangleParticle[] = [];
   let particleCount = 0;
 
-  // Resize canvas and recalculate particles
   function resizeCanvas(): void {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -175,19 +174,19 @@ export function initApp(): void {
               class="w-10 h-10 rounded-xl object-cover"
             />
             <span class="text-white font-bold text-xl">9INR</span>
-            <span class="hidden sm:inline-block bg-yellow-400/20 text-yellow-400 text-xs px-2 py-1 rounded-full">任务赚钱平台</span>
+            <span class="hidden sm:inline-block bg-yellow-400/20 text-yellow-400 text-xs px-2 py-1 rounded-full">टास्क प्लेटफॉर्म</span>
           </div>
           <div class="flex items-center gap-4">
             <nav class="hidden md:flex items-center gap-6">
-              <a href="#commission" class="text-gray-300 hover:text-yellow-400 transition-colors text-sm">三级分销</a>
-              <a href="#tasks" class="text-gray-300 hover:text-yellow-400 transition-colors text-sm">任务系统</a>
-              <a href="#calculator" class="text-gray-300 hover:text-yellow-400 transition-colors text-sm">收益计算</a>
+              <a href="#commission" class="text-gray-300 hover:text-yellow-400 transition-colors text-sm">तीन स्तरीय कमीशन</a>
+              <a href="#tasks" class="text-gray-300 hover:text-yellow-400 transition-colors text-sm">टास्क सिस्टम</a>
+              <a href="#calculator" class="text-gray-300 hover:text-yellow-400 transition-colors text-sm">कमाई कैलकुलेटर</a>
             </nav>
             <button 
               id="download-btn-header"
               class="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-2 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 text-sm"
             >
-              立即下载
+              अभी डाउनलोड करें
             </button>
           </div>
         </div>
@@ -204,16 +203,16 @@ export function initApp(): void {
               <div class="flex-1 text-center lg:text-left">
                 <div class="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-4 py-2 mb-6">
                   <span class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
-                  <span class="text-yellow-400 text-sm font-medium">三级分销 · 躺赚佣金</span>
+                  <span class="text-yellow-400 text-sm font-medium">तीन स्तरीय वितरण · पासिव इनकम</span>
                 </div>
                 
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-                  邀请好友<br/>
-                  <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">躺赚三级佣金</span>
+                  दोस्तों को आमंत्रित करें<br/>
+                  <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">तीन स्तरीय कमीशन कमाएं</span>
                 </h1>
                 
                 <p class="text-lg sm:text-xl text-gray-300 mb-8 max-w-xl">
-                  做任务赚钱，邀请好友赚佣金！三级分销体系，你的朋友做任务，你也有收益！
+                  टास्क पूरा करके पैसे कमाएं, दोस्तों को आमंत्रित करके कमीशन कमाएं! तीन स्तरीय वितरण प्रणाली से आपके दोस्तों के टास्क से भी आपको मिलेगा!
                 </p>
                 
                 <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
@@ -224,7 +223,7 @@ export function initApp(): void {
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M17.523 15.341c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9m-11.046 0c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9m11.4-6.02l1.97-3.41a.41.41 0 00-.71-.41l-2 3.46c-1.54-.7-3.26-1.09-5.14-1.09s-3.6.39-5.14 1.09l-2-3.46a.41.41 0 00-.71.41l1.97 3.41C2.69 11.08.34 14.53 0 18.5h24c-.34-3.97-2.69-7.42-6.12-9.18"/>
                     </svg>
-                    <span>下载APP开始赚钱</span>
+                    <span>ऐप डाउनलोड करें और कमाई शुरू करें</span>
                   </button>
                   
                   <button class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
@@ -233,7 +232,7 @@ export function initApp(): void {
                         <path d="M8 5v14l11-7z"/>
                       </svg>
                     </div>
-                    <span>观看介绍视频</span>
+                    <span>वीडियो देखें</span>
                   </button>
                 </div>
                 
@@ -241,17 +240,17 @@ export function initApp(): void {
                 <div class="flex items-center gap-8 mt-12 justify-center lg:justify-start">
                   <div class="text-center">
                     <div class="text-3xl font-black text-yellow-400">10M+</div>
-                    <div class="text-gray-500 text-sm">下载量</div>
+                    <div class="text-gray-500 text-sm">डाउनलोड</div>
                   </div>
                   <div class="w-px h-10 bg-white/10"></div>
                   <div class="text-center">
                     <div class="text-3xl font-black text-yellow-400">4.8</div>
-                    <div class="text-gray-500 text-sm">用户评分</div>
+                    <div class="text-gray-500 text-sm">रेटिंग</div>
                   </div>
                   <div class="w-px h-10 bg-white/10"></div>
                   <div class="text-center">
                     <div class="text-3xl font-black text-yellow-400">₹50K+</div>
-                    <div class="text-gray-500 text-sm">日均佣金</div>
+                    <div class="text-gray-500 text-sm">दैनिक कमीशन</div>
                   </div>
                 </div>
               </div>
@@ -266,15 +265,14 @@ export function initApp(): void {
                       class="w-full h-auto"
                     />
                   </div>
-                  <!-- Glow -->
                   <div class="absolute inset-0 w-64 h-full rounded-3xl bg-yellow-400 opacity-10 blur-3xl -z-10"></div>
                   
                   <!-- Floating Badge -->
                   <div class="absolute -right-4 top-1/4 bg-green-500 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg" style="animation: float 2s ease-in-out infinite 0.5s;">
-                    +₹1000 今日佣金
+                    +₹1000 आज का कमीशन
                   </div>
                   <div class="absolute -left-4 bottom-1/4 bg-yellow-500 text-black text-sm font-bold py-2 px-4 rounded-full shadow-lg" style="animation: float 2s ease-in-out infinite 1s;">
-                    三级分成
+                    तीन स्तरीय कमीशन
                   </div>
                 </div>
               </div>
@@ -287,10 +285,10 @@ export function initApp(): void {
           <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
               <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">
-                三级分销 <span class="text-yellow-400">佣金体系</span>
+                तीन स्तरीय <span class="text-yellow-400">कमीशन प्रणाली</span>
               </h2>
               <p class="text-gray-400 max-w-2xl mx-auto">
-                邀请好友加入，享受三级佣金分成。你的下级网络越活跃，你的被动收入越多！
+                दोस्तों को आमंत्रित करें और तीन स्तरों तक कमीशन कमाएं। आपका नेटवर्क जितना सक्रिय, उतना अधिक पासिव इनकम!
               </p>
             </div>
             
@@ -305,23 +303,23 @@ export function initApp(): void {
                       <span class="text-black font-black text-xl">1</span>
                     </div>
                     <div>
-                      <div class="text-white font-bold">一级代理</div>
-                      <div class="text-gray-400 text-sm">直接推荐</div>
+                      <div class="text-white font-bold">पहला स्तर</div>
+                      <div class="text-gray-400 text-sm">सीधे रेफरल</div>
                     </div>
                   </div>
                   <div class="space-y-3">
                     <div class="flex justify-between items-center">
-                      <span class="text-gray-300">代收任务佣金</span>
+                      <span class="text-gray-300">प्राप्ति टास्क कमीशन</span>
                       <span class="text-yellow-400 font-black text-2xl">1.0%</span>
                     </div>
                     <div class="flex justify-between items-center">
-                      <span class="text-gray-300">代付任务佣金</span>
+                      <span class="text-gray-300">भुगतान टास्क कमीशन</span>
                       <span class="text-yellow-400 font-black text-2xl">0.8%</span>
                     </div>
                   </div>
                   <div class="mt-4 pt-4 border-t border-white/10">
-                    <div class="text-sm text-gray-400">例：1000元任务赚</div>
-                    <div class="text-yellow-400 font-bold text-lg">₹10</div>
+                    <div class="text-sm text-gray-400">उदाहरण: ₹1000 टास्क पर</div>
+                    <div class="text-yellow-400 font-bold text-lg">₹10 कमाएं</div>
                   </div>
                 </div>
               </div>
@@ -335,23 +333,23 @@ export function initApp(): void {
                       <span class="text-black font-black text-xl">2</span>
                     </div>
                     <div>
-                      <div class="text-white font-bold">二级代理</div>
-                      <div class="text-gray-400 text-sm">间接推荐</div>
+                      <div class="text-white font-bold">दूसरा स्तर</div>
+                      <div class="text-gray-400 text-sm">अप्रत्यक्ष रेफरल</div>
                     </div>
                   </div>
                   <div class="space-y-3">
                     <div class="flex justify-between items-center">
-                      <span class="text-gray-300">代收任务佣金</span>
+                      <span class="text-gray-300">प्राप्ति टास्क कमीशन</span>
                       <span class="text-green-400 font-black text-2xl">0.5%</span>
                     </div>
                     <div class="flex justify-between items-center">
-                      <span class="text-gray-300">代付任务佣金</span>
+                      <span class="text-gray-300">भुगतान टास्क कमीशन</span>
                       <span class="text-green-400 font-black text-2xl">0.4%</span>
                     </div>
                   </div>
                   <div class="mt-4 pt-4 border-t border-white/10">
-                    <div class="text-sm text-gray-400">例：1000元任务赚</div>
-                    <div class="text-green-400 font-bold text-lg">₹5</div>
+                    <div class="text-sm text-gray-400">उदाहरण: ₹1000 टास्क पर</div>
+                    <div class="text-green-400 font-bold text-lg">₹5 कमाएं</div>
                   </div>
                 </div>
               </div>
@@ -365,23 +363,23 @@ export function initApp(): void {
                       <span class="text-black font-black text-xl">3</span>
                     </div>
                     <div>
-                      <div class="text-white font-bold">三级代理</div>
-                      <div class="text-gray-400 text-sm">再间接推荐</div>
+                      <div class="text-white font-bold">तीसरा स्तर</div>
+                      <div class="text-gray-400 text-sm">दूर का रेफरल</div>
                     </div>
                   </div>
                   <div class="space-y-3">
                     <div class="flex justify-between items-center">
-                      <span class="text-gray-300">代收任务佣金</span>
+                      <span class="text-gray-300">प्राप्ति टास्क कमीशन</span>
                       <span class="text-blue-400 font-black text-2xl">0.3%</span>
                     </div>
                     <div class="flex justify-between items-center">
-                      <span class="text-gray-300">代付任务佣金</span>
+                      <span class="text-gray-300">भुगतान टास्क कमीशन</span>
                       <span class="text-blue-400 font-black text-2xl">0.2%</span>
                     </div>
                   </div>
                   <div class="mt-4 pt-4 border-t border-white/10">
-                    <div class="text-sm text-gray-400">例：1000元任务赚</div>
-                    <div class="text-blue-400 font-bold text-lg">₹3</div>
+                    <div class="text-sm text-gray-400">उदाहरण: ₹1000 टास्क पर</div>
+                    <div class="text-blue-400 font-bold text-lg">₹3 कमाएं</div>
                   </div>
                 </div>
               </div>
@@ -394,13 +392,13 @@ export function initApp(): void {
                   <span class="text-2xl">💡</span>
                 </div>
                 <div>
-                  <h4 class="text-white font-bold mb-2">收益示例</h4>
+                  <h4 class="text-white font-bold mb-2">कमाई का उदाहरण</h4>
                   <p class="text-gray-300 text-sm leading-relaxed">
-                    你推荐了 <span class="text-yellow-400 font-bold">A</span>，A推荐了 <span class="text-green-400 font-bold">B</span>，B推荐了 <span class="text-blue-400 font-bold">C</span><br/>
-                    • A做了1000元代收任务 → 你赚 <span class="text-yellow-400 font-bold">₹10</span><br/>
-                    • B做了1000元代收任务 → 你赚 <span class="text-green-400 font-bold">₹5</span><br/>
-                    • C做了1000元代收任务 → 你赚 <span class="text-blue-400 font-bold">₹3</span><br/>
-                    <span class="text-white font-medium">躺赚模式：只要你的下级网络在活跃，你每天都在赚取佣金！</span>
+                    आपने <span class="text-yellow-400 font-bold">A</span> को आमंत्रित किया, A ने <span class="text-green-400 font-bold">B</span> को, B ने <span class="text-blue-400 font-bold">C</span> को<br/>
+                    • A ने ₹1000 का प्राप्ति टास्क किया → आपको <span class="text-yellow-400 font-bold">₹10</span><br/>
+                    • B ने ₹1000 का प्राप्ति टास्क किया → आपको <span class="text-green-400 font-bold">₹5</span><br/>
+                    • C ने ₹1000 का प्राप्ति टास्क किया → आपको <span class="text-blue-400 font-bold">₹3</span><br/>
+                    <span class="text-white font-medium">पासिव इनकम: जब तक आपका नेटवर्क सक्रिय है, आप हर दिन कमीशन कमा रहे हैं!</span>
                   </p>
                 </div>
               </div>
@@ -413,10 +411,10 @@ export function initApp(): void {
           <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
               <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">
-                双向任务 <span class="text-yellow-400">轻松赚钱</span>
+                दोहरी टास्क <span class="text-yellow-400">आसान कमाई</span>
               </h2>
               <p class="text-gray-400 max-w-2xl mx-auto">
-                简单任务，30分钟内完成。代收代付双向选择，灵活赚钱！
+                सरल टास्क, 30 मिनट में पूरा। प्राप्ति और भुगतान दोनों विकल्प, लचीली कमाई!
               </p>
             </div>
             
@@ -430,8 +428,8 @@ export function initApp(): void {
                     </svg>
                   </div>
                   <div>
-                    <h3 class="text-2xl font-bold text-white">代收任务</h3>
-                    <p class="text-green-400">收款并确认</p>
+                    <h3 class="text-2xl font-bold text-white">प्राप्ति टास्क</h3>
+                    <p class="text-green-400">पैसे प्राप्त करें और पुष्टि करें</p>
                   </div>
                 </div>
                 <div class="space-y-4">
@@ -441,7 +439,7 @@ export function initApp(): void {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                       </svg>
                     </div>
-                    <span class="text-gray-300">接收付款到指定账户</span>
+                    <span class="text-gray-300">निर्दिष्ट खाते में पैसे प्राप्त करें</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <div class="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
@@ -449,7 +447,7 @@ export function initApp(): void {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                       </svg>
                     </div>
-                    <span class="text-gray-300">确认收款并截图上传</span>
+                    <span class="text-gray-300">प्राप्ति की पुष्टि करें और स्क्रीनशॉट अपलोड करें</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <div class="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
@@ -457,13 +455,13 @@ export function initApp(): void {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                       </svg>
                     </div>
-                    <span class="text-gray-300">获得任务奖励 + 佣金分成</span>
+                    <span class="text-gray-300">टास्क रिवार्ड + कमीशन प्राप्त करें</span>
                   </div>
                 </div>
                 <div class="mt-6 pt-6 border-t border-white/10">
                   <div class="flex justify-between items-center">
-                    <span class="text-gray-400">预计收益</span>
-                    <span class="text-green-400 font-bold text-xl">每单 +1%~2%</span>
+                    <span class="text-gray-400">अनुमानित कमाई</span>
+                    <span class="text-green-400 font-bold text-xl">प्रति टास्क +1%~2%</span>
                   </div>
                 </div>
               </div>
@@ -477,8 +475,8 @@ export function initApp(): void {
                     </svg>
                   </div>
                   <div>
-                    <h3 class="text-2xl font-bold text-white">代付任务</h3>
-                    <p class="text-blue-400">付款给指定账户</p>
+                    <h3 class="text-2xl font-bold text-white">भुगतान टास्क</h3>
+                    <p class="text-blue-400">निर्दिष्ट खाते में भुगतान करें</p>
                   </div>
                 </div>
                 <div class="space-y-4">
@@ -488,7 +486,7 @@ export function initApp(): void {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                       </svg>
                     </div>
-                    <span class="text-gray-300">按要求付款到指定账户</span>
+                    <span class="text-gray-300">निर्दिष्ट खाते में भुगतान करें</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <div class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
@@ -496,7 +494,7 @@ export function initApp(): void {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                       </svg>
                     </div>
-                    <span class="text-gray-300">上传付款截图</span>
+                    <span class="text-gray-300">भुगतान स्क्रीनशॉट अपलोड करें</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <div class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
@@ -504,13 +502,13 @@ export function initApp(): void {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                       </svg>
                     </div>
-                    <span class="text-gray-300">获得任务奖励 + 佣金分成</span>
+                    <span class="text-gray-300">टास्क रिवार्ड + कमीशन प्राप्त करें</span>
                   </div>
                 </div>
                 <div class="mt-6 pt-6 border-t border-white/10">
                   <div class="flex justify-between items-center">
-                    <span class="text-gray-400">预计收益</span>
-                    <span class="text-blue-400 font-bold text-xl">每单 +0.8%~1.5%</span>
+                    <span class="text-gray-400">अनुमानित कमाई</span>
+                    <span class="text-blue-400 font-bold text-xl">प्रति टास्क +0.8%~1.5%</span>
                   </div>
                 </div>
               </div>
@@ -523,52 +521,52 @@ export function initApp(): void {
           <div class="max-w-4xl mx-auto">
             <div class="text-center mb-12">
               <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">
-                收益 <span class="text-yellow-400">计算器</span>
+                कमाई <span class="text-yellow-400">कैलकुलेटर</span>
               </h2>
-              <p class="text-gray-400">看看你的代理网络能带来多少被动收入</p>
+              <p class="text-gray-400">देखें आपका नेटवर्क कितना पासिव इनकम ला सकता है</p>
             </div>
             
             <div class="bg-white/5 rounded-3xl p-8 border border-white/10">
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
                 <div>
-                  <label class="block text-gray-400 text-sm mb-2">一级代理人数</label>
+                  <label class="block text-gray-400 text-sm mb-2">पहले स्तर के एजेंट</label>
                   <input type="number" id="level1-count" value="10" min="0" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xl font-bold focus:border-yellow-400/50 focus:outline-none" />
                 </div>
                 <div>
-                  <label class="block text-gray-400 text-sm mb-2">每人每天任务额 (₹)</label>
+                  <label class="block text-gray-400 text-sm mb-2">प्रति दिन टास्क राशि (₹)</label>
                   <input type="number" id="daily-task" value="100" min="0" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xl font-bold focus:border-yellow-400/50 focus:outline-none" />
                 </div>
                 <div>
-                  <label class="block text-gray-400 text-sm mb-2">邀请倍数</label>
+                  <label class="block text-gray-400 text-sm mb-2">आमंत्रण गुणक</label>
                   <input type="number" id="invite-multiplier" value="10" min="0" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xl font-bold focus:border-yellow-400/50 focus:outline-none" />
                 </div>
               </div>
               
               <button id="calculate-btn" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] mb-8">
-                计算我的收益
+                मेरी कमाई की गणना करें
               </button>
               
               <!-- Results -->
               <div id="calc-results" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="bg-yellow-400/10 rounded-xl p-4 border border-yellow-400/20">
-                  <div class="text-gray-400 text-sm mb-1">你的代理网络</div>
-                  <div class="text-yellow-400 font-black text-3xl" id="network-count">1,110 人</div>
+                  <div class="text-gray-400 text-sm mb-1">आपका नेटवर्क</div>
+                  <div class="text-yellow-400 font-black text-3xl" id="network-count">1,110 लोग</div>
                   <div class="text-gray-500 text-xs">10 + 100 + 1000</div>
                 </div>
                 <div class="bg-green-400/10 rounded-xl p-4 border border-green-400/20">
-                  <div class="text-gray-400 text-sm mb-1">每日佣金</div>
+                  <div class="text-gray-400 text-sm mb-1">दैनिक कमीशन</div>
                   <div class="text-green-400 font-black text-3xl" id="daily-income">₹360</div>
-                  <div class="text-gray-500 text-xs">被动收入</div>
+                  <div class="text-gray-500 text-xs">पासिव इनकम</div>
                 </div>
                 <div class="bg-blue-400/10 rounded-xl p-4 border border-blue-400/20">
-                  <div class="text-gray-400 text-sm mb-1">每月佣金</div>
+                  <div class="text-gray-400 text-sm mb-1">मासिक कमीशन</div>
                   <div class="text-blue-400 font-black text-3xl" id="monthly-income">₹10,800</div>
-                  <div class="text-gray-500 text-xs">30天计算</div>
+                  <div class="text-gray-500 text-xs">30 दिनों की गणना</div>
                 </div>
                 <div class="bg-purple-400/10 rounded-xl p-4 border border-purple-400/20">
-                  <div class="text-gray-400 text-sm mb-1">每年佣金</div>
+                  <div class="text-gray-400 text-sm mb-1">वार्षिक कमीशन</div>
                   <div class="text-purple-400 font-black text-3xl" id="yearly-income">₹131,400</div>
-                  <div class="text-gray-500 text-xs">365天计算</div>
+                  <div class="text-gray-500 text-xs">365 दिनों की गणना</div>
                 </div>
               </div>
             </div>
@@ -579,7 +577,7 @@ export function initApp(): void {
         <section class="w-full py-16 px-4">
           <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-2xl sm:text-3xl font-black text-white mb-8">
-              全球适用 · <span class="text-yellow-400">8种语言</span>
+              वैश्विक · <span class="text-yellow-400">8 भाषाएं</span>
             </h2>
             <div class="flex flex-wrap justify-center gap-4">
               <div class="bg-white/5 rounded-xl px-4 py-2 border border-white/10 hover:border-yellow-400/30 transition-colors">
@@ -623,10 +621,10 @@ export function initApp(): void {
           <div class="max-w-4xl mx-auto">
             <div class="bg-gradient-to-r from-yellow-400/20 via-yellow-500/10 to-yellow-400/20 rounded-3xl p-8 sm:p-12 border border-yellow-400/30 text-center">
               <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">
-                开启你的被动收入之旅
+                अपनी पासिव इनकम यात्रा शुरू करें
               </h2>
               <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
-                立即下载9INR，输入邀请码开始赚钱。邀请好友，享受三级佣金分成！
+                अभी 9INR डाउनलोड करें, आमंत्रण कोड डालें और कमाई शुरू करें। दोस्तों को आमंत्रित करें, तीन स्तरीय कमीशन का आनंद लें!
               </p>
               <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button 
@@ -636,7 +634,7 @@ export function initApp(): void {
                   <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.523 15.341c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9m-11.046 0c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9m11.4-6.02l1.97-3.41a.41.41 0 00-.71-.41l-2 3.46c-1.54-.7-3.26-1.09-5.14-1.09s-3.6.39-5.14 1.09l-2-3.46a.41.41 0 00-.71.41l1.97 3.41C2.69 11.08.34 14.53 0 18.5h24c-.34-3.97-2.69-7.42-6.12-9.18"/>
                   </svg>
-                  <span>立即下载APP</span>
+                  <span>अभी ऐप डाउनलोड करें</span>
                 </button>
               </div>
             </div>
@@ -658,12 +656,12 @@ export function initApp(): void {
               <span class="text-white font-bold">9INR.VIP</span>
             </div>
             <div class="flex items-center gap-6 text-gray-400 text-sm">
-              <a href="#" class="hover:text-yellow-400 transition-colors">隐私政策</a>
-              <a href="#" class="hover:text-yellow-400 transition-colors">服务条款</a>
-              <a href="#" class="hover:text-yellow-400 transition-colors">联系我们</a>
+              <a href="#" class="hover:text-yellow-400 transition-colors">गोपनीयता नीति</a>
+              <a href="#" class="hover:text-yellow-400 transition-colors">सेवा की शर्तें</a>
+              <a href="#" class="hover:text-yellow-400 transition-colors">संपर्क करें</a>
             </div>
             <div class="text-gray-500 text-sm">
-              © 2024 9INR. All rights reserved.
+              © 2024 9INR. सर्वाधिकार सुरक्षित।
             </div>
           </div>
         </div>
@@ -689,12 +687,11 @@ export function initApp(): void {
     const level3 = level2 * multiplier;
     const network = level1 + level2 + level3;
     
-    // Daily income: Level1 * 1% + Level2 * 0.5% + Level3 * 0.3%
     const dailyIncome = (level1 * dailyTask * 0.01) + (level2 * dailyTask * 0.005) + (level3 * dailyTask * 0.003);
     const monthlyIncome = dailyIncome * 30;
     const yearlyIncome = dailyIncome * 365;
     
-    (document.getElementById('network-count') as HTMLElement).textContent = network.toLocaleString() + ' 人';
+    (document.getElementById('network-count') as HTMLElement).textContent = network.toLocaleString() + ' लोग';
     (document.getElementById('daily-income') as HTMLElement).textContent = '₹' + Math.round(dailyIncome).toLocaleString();
     (document.getElementById('monthly-income') as HTMLElement).textContent = '₹' + Math.round(monthlyIncome).toLocaleString();
     (document.getElementById('yearly-income') as HTMLElement).textContent = '₹' + Math.round(yearlyIncome).toLocaleString();
