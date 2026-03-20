@@ -101,8 +101,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img 
-                src="/avatar-level1.jpeg"
-                alt="9INR"
+                src="/app-icon.png"
                 className="w-10 h-10 rounded-xl object-cover"
               />
               <span className="text-white font-bold text-xl">9INR</span>
@@ -189,7 +188,7 @@ export default function Home() {
                 <div className="relative">
                   <div className="w-64 h-auto rounded-3xl overflow-hidden shadow-2xl border border-white/10" style={{ animation: 'float 3s ease-in-out infinite' }}>
                     <img 
-                      src="/avatar-level1.jpeg"
+                      src="/app-icon.png"
                       alt="9INR App"
                       className="w-full h-auto"
                     />
@@ -736,8 +735,7 @@ export default function Home() {
           <div className="bg-gray-900 rounded-3xl p-8 max-w-md w-full border border-yellow-400/30 shadow-2xl">
             <div className="text-center">
               <img 
-                src="/avatar-level1.jpeg"
-                alt="9INR"
+                src="/app-icon.png"
                 className="w-20 h-20 rounded-2xl mx-auto mb-4 object-cover"
               />
               <h3 className="text-2xl font-bold text-white mb-2">9INR डाउनलोड करें</h3>
