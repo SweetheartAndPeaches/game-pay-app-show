@@ -65,4 +65,5 @@ Thumbs.db
 # Vite
 .vite/
 
-.coze-logs
+# Vercel
+.vercel

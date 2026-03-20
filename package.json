@@ -8,7 +8,8 @@
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint",
     "start": "bash ./scripts/start.sh",
-    "ts-check": "tsc -p tsconfig.json"
+    "ts-check": "tsc -p tsconfig.json",
+    "build:vercel": "npx vite build"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.95.3",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.5",
+    "@vercel/node": "^5.1.14",
     "autoprefixer": "^10.4.20",
     "coze-coding-dev-sdk": "^0.7.17",
     "esbuild": "^0.24.2",
