@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
+import { Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
+
+const notoSansDevanagari = Noto_Sans_Devanagari({
+  subsets: ["devanagari"],
+  variable: "--font-noto-sans-devanagari",
+});
 
 export const metadata: Metadata = {
   title: "9INR - डाउनलोड करें",
@@ -12,15 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="hi">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap" 
-          rel="stylesheet" 
-        />
-      </head>
+    <html lang="hi" className={notoSansDevanagari.variable}>
       <body className="antialiased">
         {children}
       </body>
