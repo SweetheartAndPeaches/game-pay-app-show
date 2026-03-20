@@ -19,13 +19,6 @@ export function initApp(): void {
       
       <!-- Particles will be added by JavaScript -->
       <div id="particles-container"></div>
-      
-      <!-- Grid Lines -->
-      <div class="grid-line grid-line-h" style="top: 10%; animation-delay: 0s;"></div>
-      <div class="grid-line grid-line-h" style="top: 30%; animation-delay: 5s;"></div>
-      <div class="grid-line grid-line-h" style="top: 50%; animation-delay: 10s;"></div>
-      <div class="grid-line grid-line-h" style="top: 70%; animation-delay: 15s;"></div>
-      <div class="grid-line grid-line-h" style="top: 90%; animation-delay: 20s;"></div>
     </div>
 
     <div class="content-wrapper min-h-screen flex flex-col">
