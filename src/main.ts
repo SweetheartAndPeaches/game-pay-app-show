@@ -1,3 +1,172 @@
+// ===== Triangle Particle Animation =====
+interface TriangleParticle {
+  x: number;
+  y: number;
+  size: number;
+  speedY: number;
+  speedX: number;
+  opacity: number;
+  rotation: number;
+  rotationSpeed: number;
+}
+
+let animationFrameId: number | null = null;
+
+function initBackgroundAnimation(): void {
+  const canvas = document.getElementById('bg-canvas') as HTMLCanvasElement;
+  
+  if (!canvas) {
+    console.error('Canvas element not found!');
+    return;
+  }
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) {
+    console.error('Canvas context not available!');
+    return;
+  }
+
+  console.log('=== 9INR Triangle Animation Started ===');
+
+  const particles: TriangleParticle[] = [];
+  const particleCount = 80;
+
+  // Resize canvas
+  function resizeCanvas(): void {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    console.log('Canvas size:', canvas.width, 'x', canvas.height);
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // Create particles
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: 20 + Math.random() * 30,
+      speedY: -(0.8 + Math.random() * 1.2),
+      speedX: (Math.random() - 0.5) * 1.0,
+      opacity: 0.5 + Math.random() * 0.5,
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.04
+    });
+  }
+
+  // Draw triangle
+  function drawTriangle(x: number, y: number, size: number, rotation: number, opacity: number): void {
+    if (!ctx) return;
+    
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+
+    ctx.beginPath();
+    ctx.moveTo(0, -size);
+    ctx.lineTo(-size * 0.6, size * 0.6);
+    ctx.lineTo(size * 0.6, size * 0.6);
+    ctx.closePath();
+
+    ctx.shadowColor = 'rgba(255, 215, 0, 1)';
+    ctx.shadowBlur = 20;
+    ctx.fillStyle = `rgba(255, 215, 0, ${opacity})`;
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // Animation loop
+  let frameCount = 0;
+  function animate(): void {
+    if (!ctx) return;
+    
+    // Clear canvas
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Update and draw particles
+    for (const p of particles) {
+      p.y += p.speedY;
+      p.x += p.speedX;
+      p.rotation += p.rotationSpeed;
+
+      // Reset if out of bounds
+      if (p.y < -60) {
+        p.y = canvas.height + 60;
+        p.x = Math.random() * canvas.width;
+      }
+
+      drawTriangle(p.x, p.y, p.size, p.rotation, p.opacity);
+    }
+
+    frameCount++;
+    if (frameCount % 100 === 0) {
+      console.log('Animation frame:', frameCount);
+    }
+
+    animationFrameId = requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+
+// ===== Download Handler =====
+function handleDownload(platform: string): void {
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4';
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
+  };
+
+  modal.innerHTML = `
+    <div class="bg-gray-900 rounded-3xl p-8 max-w-md w-full border border-yellow-400/30 shadow-2xl">
+      <div class="text-center">
+        <img 
+          src="https://code.coze.cn/api/sandbox/coze_coding/file/proxy?expire_time=-1&file_path=assets%2F%E7%94%BB%E6%9D%BF+1.png&nonce=6d3f72c8-f4f7-4ad9-bcc3-823fd80794f8&project_id=7619222010605879330&sign=5dae79049555ccd18cf6790ff76b33e7f16dd8c15328fb199be74d824d53a75f"
+          alt="9INR"
+          class="w-20 h-20 rounded-2xl mx-auto mb-4 object-cover"
+        />
+        <h3 class="text-2xl font-bold text-white mb-2">9INR डाउनलोड करें</h3>
+        <p class="text-gray-400 mb-6">आपका डाउनलोड शुरू हो रहा है...</p>
+        
+        <div class="bg-white/5 rounded-xl p-4 mb-6">
+          <div class="flex items-center justify-center gap-2 text-yellow-400 mb-2">
+            <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            <span class="font-medium">डाउनलोड हो रहा है...</span>
+          </div>
+          <div class="w-full bg-gray-700 rounded-full h-2">
+            <div class="bg-yellow-400 h-2 rounded-full transition-all duration-1000" style="width: 0%" id="progress-bar"></div>
+          </div>
+        </div>
+        
+        <button class="text-gray-400 hover:text-white transition-colors close-modal">
+          बंद करें
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Close button handler
+  modal.querySelector('.close-modal')?.addEventListener('click', () => modal.remove());
+
+  // Simulate download progress
+  const progressBar = document.getElementById('progress-bar');
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += 10;
+    if (progressBar) progressBar.style.width = progress + '%';
+    if (progress >= 100) {
+      clearInterval(interval);
+    }
+  }, 200);
+}
+
+// ===== Main App Initialization =====
 export function initApp(): void {
   const app = document.getElementById('app');
 
@@ -41,7 +210,6 @@ export function initApp(): void {
               class="w-48 h-48 sm:w-56 sm:h-56 rounded-[3rem] shadow-2xl object-cover"
               style="animation: float 3s ease-in-out infinite;"
             />
-            <!-- Glow effect -->
             <div class="absolute inset-0 w-48 h-48 sm:w-56 sm:h-56 rounded-[3rem] bg-yellow-400 opacity-20 blur-3xl -z-10"></div>
           </div>
 
@@ -59,7 +227,7 @@ export function initApp(): void {
           <!-- Download Buttons -->
           <div id="download" class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <button 
-              onclick="handleDownload('android')"
+              id="android-btn"
               class="group flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg"
               style="animation: pulse-glow 2s ease-in-out infinite;"
             >
@@ -73,7 +241,7 @@ export function initApp(): void {
             </button>
             
             <button 
-              onclick="handleDownload('ios')"
+              id="ios-btn"
               class="group flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 border border-white/20"
             >
               <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -160,173 +328,12 @@ export function initApp(): void {
         </div>
       </footer>
     </div>
-
-    <script>
-      console.log('=== 9INR Page Script Loaded ===');
-      
-      // ===== Triangle Particle Background Animation =====
-      
-      // Particle class (plain JavaScript)
-      function TriangleParticle(canvasWidth, canvasHeight) {
-        this.x = Math.random() * canvasWidth;
-        this.y = Math.random() * canvasHeight;
-        this.size = 20 + Math.random() * 30;  // 更大的粒子
-        this.speedY = -(0.8 + Math.random() * 1.2);  // 更快
-        this.speedX = (Math.random() - 0.5) * 1.0;
-        this.opacity = 0.5 + Math.random() * 0.5;  // 更亮
-        this.rotation = Math.random() * Math.PI * 2;
-        this.rotationSpeed = (Math.random() - 0.5) * 0.04;
-      }
-      
-      TriangleParticle.prototype.update = function(canvasWidth, canvasHeight) {
-        this.y += this.speedY;
-        this.x += this.speedX;
-        this.rotation += this.rotationSpeed;
-        
-        if (this.y < -60) {
-          this.y = canvasHeight + 60;
-          this.x = Math.random() * canvasWidth;
-        }
-      };
-      
-      // Initialize canvas and particles
-      const canvas = document.getElementById('bg-canvas');
-      console.log('Canvas element:', canvas);
-      
-      if (canvas) {
-        const ctx = canvas.getContext('2d');
-        console.log('Canvas context:', ctx);
-        
-        const particles = [];
-        const particleCount = 80;  // 更多粒子
-        
-        function resizeCanvas() {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-          console.log('Canvas resized to:', canvas.width, 'x', canvas.height);
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        
-        for (let i = 0; i < particleCount; i++) {
-          particles.push(new TriangleParticle(canvas.width, canvas.height));
-        }
-        
-        function drawTriangle(x, y, size, rotation, opacity) {
-          if (!ctx) return;
-          
-          ctx.save();
-          ctx.translate(x, y);
-          ctx.rotate(rotation);
-          
-          ctx.beginPath();
-          ctx.moveTo(0, -size);
-          ctx.lineTo(-size * 0.6, size * 0.6);
-          ctx.lineTo(size * 0.6, size * 0.6);
-          ctx.closePath();
-          
-          // 更强的发光效果
-          ctx.shadowColor = 'rgba(255, 215, 0, 1)';
-          ctx.shadowBlur = 20;
-          ctx.fillStyle = 'rgba(255, 215, 0, ' + opacity + ')';
-          ctx.fill();
-          
-          ctx.restore();
-        }
-        
-        let frameCount = 0;
-        function animate() {
-          if (!ctx) return;
-          
-          // 深色背景
-          ctx.fillStyle = '#0a0a0a';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          
-          // 更新和绘制粒子
-          for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
-            p.update(canvas.width, canvas.height);
-            drawTriangle(p.x, p.y, p.size, p.rotation, p.opacity);
-          }
-          
-          frameCount++;
-          if (frameCount % 100 === 0) {
-            console.log('Animation running, frame:', frameCount);
-          }
-          
-          requestAnimationFrame(animate);
-        }
-        
-        // 立即启动动画
-        console.log('Starting animation with', particleCount, 'particles');
-        animate();
-      } else {
-        console.error('Canvas element not found!');
-      }
-      
-      // ===== Download Handler =====
-      window.handleDownload = function(platform) {
-        // Create download modal
-        const modal = document.createElement('div');
-        modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4';
-        modal.onclick = (e) => {
-          if (e.target === modal) modal.remove();
-        };
-        
-        modal.innerHTML = \`
-          <div class="bg-gray-900 rounded-3xl p-8 max-w-md w-full border border-yellow-400/30 shadow-2xl">
-            <div class="text-center">
-              <img 
-                src="https://code.coze.cn/api/sandbox/coze_coding/file/proxy?expire_time=-1&file_path=assets%2F%E7%94%BB%E6%9D%BF+1.png&nonce=6d3f72c8-f4f7-4ad9-bcc3-823fd80794f8&project_id=7619222010605879330&sign=5dae79049555ccd18cf6790ff76b33e7f16dd8c15328fb199be74d824d53a75f"
-                alt="9INR"
-                class="w-20 h-20 rounded-2xl mx-auto mb-4 object-cover"
-              />
-              <h3 class="text-2xl font-bold text-white mb-2">9INR डाउनलोड करें</h3>
-              <p class="text-gray-400 mb-6">आपका डाउनलोड शुरू हो रहा है...</p>
-              
-              <div class="bg-white/5 rounded-xl p-4 mb-6">
-                <div class="flex items-center justify-center gap-2 text-yellow-400 mb-2">
-                  <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                  </svg>
-                  <span class="font-medium">डाउनलोड हो रहा है...</span>
-                </div>
-                <div class="w-full bg-gray-700 rounded-full h-2">
-                  <div class="bg-yellow-400 h-2 rounded-full transition-all duration-1000" style="width: 0%" id="progress-bar"></div>
-                </div>
-              </div>
-              
-              <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-white transition-colors">
-                बंद करें
-              </button>
-            </div>
-          </div>
-        \`;
-        
-        document.body.appendChild(modal);
-        
-        // Simulate download progress
-        const progressBar = document.getElementById('progress-bar');
-        let progress = 0;
-        const interval = setInterval(() => {
-          progress += 10;
-          if (progressBar) progressBar.style.width = progress + '%';
-          if (progress >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-              // Trigger actual download
-              const link = document.createElement('a');
-              link.href = '#';
-              link.download = '9INR-' + platform + '.apk';
-              link.click();
-              
-              // Update modal
-              const progressText = modal.querySelector('.text-yellow-400 span');
-              if (progressText) progressText.textContent = 'डाउनलोड पूरा हुआ!';
-            }, 500);
-          }
-        }, 200);
-      }
-    </script>
   `;
+
+  // Initialize background animation AFTER DOM is ready
+  initBackgroundAnimation();
+
+  // Setup download button handlers
+  document.getElementById('android-btn')?.addEventListener('click', () => handleDownload('android'));
+  document.getElementById('ios-btn')?.addEventListener('click', () => handleDownload('ios'));
 }
