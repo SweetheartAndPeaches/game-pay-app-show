@@ -162,43 +162,48 @@ export function initApp(): void {
     </div>
 
     <script>
+      console.log('=== 9INR Page Script Loaded ===');
+      
       // ===== Triangle Particle Background Animation =====
       
       // Particle class (plain JavaScript)
-      class TriangleParticle {
-        constructor(canvasWidth, canvasHeight) {
-          this.x = Math.random() * canvasWidth;
-          this.y = Math.random() * canvasHeight;
-          this.size = 15 + Math.random() * 25;
-          this.speedY = -(0.5 + Math.random() * 1.0);
-          this.speedX = (Math.random() - 0.5) * 0.8;
-          this.opacity = 0.3 + Math.random() * 0.5;
-          this.rotation = Math.random() * Math.PI * 2;
-          this.rotationSpeed = (Math.random() - 0.5) * 0.03;
-        }
-        
-        update(canvasWidth, canvasHeight) {
-          this.y += this.speedY;
-          this.x += this.speedX;
-          this.rotation += this.rotationSpeed;
-          
-          if (this.y < -50) {
-            this.y = canvasHeight + 50;
-            this.x = Math.random() * canvasWidth;
-          }
-        }
+      function TriangleParticle(canvasWidth, canvasHeight) {
+        this.x = Math.random() * canvasWidth;
+        this.y = Math.random() * canvasHeight;
+        this.size = 20 + Math.random() * 30;  // 更大的粒子
+        this.speedY = -(0.8 + Math.random() * 1.2);  // 更快
+        this.speedX = (Math.random() - 0.5) * 1.0;
+        this.opacity = 0.5 + Math.random() * 0.5;  // 更亮
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.04;
       }
+      
+      TriangleParticle.prototype.update = function(canvasWidth, canvasHeight) {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        this.rotation += this.rotationSpeed;
+        
+        if (this.y < -60) {
+          this.y = canvasHeight + 60;
+          this.x = Math.random() * canvasWidth;
+        }
+      };
       
       // Initialize canvas and particles
       const canvas = document.getElementById('bg-canvas');
+      console.log('Canvas element:', canvas);
+      
       if (canvas) {
         const ctx = canvas.getContext('2d');
+        console.log('Canvas context:', ctx);
+        
         const particles = [];
-        const particleCount = 60;
+        const particleCount = 80;  // 更多粒子
         
         function resizeCanvas() {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
+          console.log('Canvas resized to:', canvas.width, 'x', canvas.height);
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -220,36 +225,43 @@ export function initApp(): void {
           ctx.lineTo(size * 0.6, size * 0.6);
           ctx.closePath();
           
-          ctx.shadowColor = 'rgba(255, 215, 0, 0.8)';
-          ctx.shadowBlur = 15;
+          // 更强的发光效果
+          ctx.shadowColor = 'rgba(255, 215, 0, 1)';
+          ctx.shadowBlur = 20;
           ctx.fillStyle = 'rgba(255, 215, 0, ' + opacity + ')';
           ctx.fill();
           
           ctx.restore();
         }
         
+        let frameCount = 0;
         function animate() {
           if (!ctx) return;
           
-          const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-          gradient.addColorStop(0, '#0a0a0a');
-          gradient.addColorStop(0.5, '#1a1a1a');
-          gradient.addColorStop(1, '#0a0a0a');
-          ctx.fillStyle = gradient;
+          // 深色背景
+          ctx.fillStyle = '#0a0a0a';
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           
-          particles.forEach(function(p) {
+          // 更新和绘制粒子
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
             p.update(canvas.width, canvas.height);
             drawTriangle(p.x, p.y, p.size, p.rotation, p.opacity);
-          });
+          }
+          
+          frameCount++;
+          if (frameCount % 100 === 0) {
+            console.log('Animation running, frame:', frameCount);
+          }
           
           requestAnimationFrame(animate);
         }
         
+        // 立即启动动画
+        console.log('Starting animation with', particleCount, 'particles');
         animate();
-        console.log('Triangle animation started with', particleCount, 'particles');
       } else {
-        console.error('Canvas not found');
+        console.error('Canvas element not found!');
       }
       
       // ===== Download Handler =====
