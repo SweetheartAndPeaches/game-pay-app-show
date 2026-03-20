@@ -86,21 +86,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('[Chat] API error:', response.status, errorText);
-      throw new Error(`API error: ${response.status}`);
+      return res.status(500).json({ error: `API error: ${response.status}` });
     }
 
-    // SSE 流式响应
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-
+    // 对于 Vercel，使用非流式响应更稳定
     const reader = response.body?.getReader();
     if (!reader) {
-      throw new Error('No reader available');
+      return res.status(500).json({ error: 'No reader available' });
     }
 
     const decoder = new TextDecoder();
     let buffer = '';
+    let fullContent = '';
 
     while (true) {
       const { done, value } = await reader.read();
@@ -119,7 +116,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             const parsed = JSON.parse(data);
             const content = parsed.choices?.[0]?.delta?.content || '';
             if (content) {
-              res.write(`data: ${JSON.stringify({ content })}\n\n`);
+              fullContent += content;
             }
           } catch (e) {
             // Skip invalid JSON
@@ -128,17 +125,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     }
 
-    res.write('data: [DONE]\n\n');
-    res.end();
-    console.log('[Chat] Stream completed');
+    console.log('[Chat] Response completed, length:', fullContent.length);
+    
+    // 返回完整响应
+    return res.status(200).json({ content: fullContent });
+
   } catch (error) {
     console.error('[Chat] Error:', error);
-    if (!res.headersSent) {
-      res.status(500).json({ error: 'Failed to get response from AI' });
-    } else {
-      res.write(`data: ${JSON.stringify({ content: '抱歉，我遇到点问题。请稍后再试。🙏' })}\n\n`);
-      res.write('data: [DONE]\n\n`);
-      res.end();
-    }
+    return res.status(500).json({ error: 'Failed to get response from AI' });
   }
 }
