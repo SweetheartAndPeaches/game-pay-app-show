@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express';
 
-// API Key 从环境变量读取，不在代码中硬编码
-const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
+const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY || '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';
 const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 
 const SYSTEM_PROMPT = `你是一个热情的印度营销专家，名字叫Raju。你正在推广9INR任务平台。
@@ -40,11 +39,6 @@ export async function handleChat(req: Request, res: Response) {
 
   if (!messages || !Array.isArray(messages)) {
     return res.status(400).json({ error: 'Messages are required' });
-  }
-
-  if (!NVIDIA_API_KEY) {
-    console.error('[Chat] NVIDIA_API_KEY is not configured');
-    return res.status(500).json({ error: 'AI service not configured' });
   }
 
   const allMessages = [

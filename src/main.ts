@@ -1,6 +1,3 @@
-// ===== Security Protection =====
-import { initSecurity } from './security';
-
 // ===== Triangle Particle Animation =====
 interface TriangleParticle {
   x: number;
@@ -103,77 +100,7 @@ function initBackgroundAnimation(): void {
 }
 
 // ===== Download Handler =====
-// 下载频率限制
-const DOWNLOAD_LIMIT = 3; // 每小时最多下载次数
-const DOWNLOAD_COOLDOWN = 10 * 1000; // 下载冷却时间（毫秒）
-let lastDownloadTime = 0;
-let downloadCount = 0;
-let downloadCountResetTime = Date.now() + 60 * 60 * 1000; // 1小时后重置
-
-function canDownload(): { allowed: boolean; message: string } {
-  const now = Date.now();
-  
-  // 重置下载计数
-  if (now > downloadCountResetTime) {
-    downloadCount = 0;
-    downloadCountResetTime = now + 60 * 60 * 1000;
-  }
-  
-  // 检查冷却时间
-  if (now - lastDownloadTime < DOWNLOAD_COOLDOWN) {
-    const remainingSeconds = Math.ceil((DOWNLOAD_COOLDOWN - (now - lastDownloadTime)) / 1000);
-    return { allowed: false, message: `请等待 ${remainingSeconds} 秒后再试` };
-  }
-  
-  // 检查下载次数
-  if (downloadCount >= DOWNLOAD_LIMIT) {
-    const resetMinutes = Math.ceil((downloadCountResetTime - now) / 60000);
-    return { allowed: false, message: `每小时最多下载 ${DOWNLOAD_LIMIT} 次，请 ${resetMinutes} 分钟后再试` };
-  }
-  
-  return { allowed: true, message: '' };
-}
-
-// 显示下载限制提示
-function showDownloadLimitModal(message: string): void {
-  const modal = document.createElement('div');
-  modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4';
-  modal.onclick = (e) => {
-    if (e.target === modal) modal.remove();
-  };
-
-  modal.innerHTML = `
-    <div class="bg-gray-900 rounded-3xl p-8 max-w-md w-full border border-red-400/30 shadow-2xl">
-      <div class="text-center">
-        <div class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
-          <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-white mb-2">下载受限</h3>
-        <p class="text-gray-400 mb-6">${message}</p>
-        <button class="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-xl transition-colors close-modal">
-          关闭
-        </button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-  modal.querySelector('.close-modal')?.addEventListener('click', () => modal.remove());
-}
-
 function handleDownload(platform: string): void {
-  // 检查是否允许下载
-  const { allowed, message } = canDownload();
-  if (!allowed) {
-    showDownloadLimitModal(message);
-    return;
-  }
-  
-  // 更新下载记录
-  lastDownloadTime = Date.now();
-  downloadCount++;
   const modal = document.createElement('div');
   modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4';
   modal.onclick = (e) => {
@@ -503,9 +430,6 @@ function startNotificationSystem(): void {
 
 // ===== Main App Initialization =====
 export function initApp(): void {
-  // 初始化安全防护
-  initSecurity();
-  
   const app = document.getElementById('app');
 
   if (!app) {
