@@ -1,35 +1,588 @@
-import type { Metadata } from 'next';
-import Image from 'next/image';
+'use client';
 
-export const metadata: Metadata = {
-  title: '扣子编程 - AI 开发伙伴',
-  description: '扣子编程，你的 AI 开发伙伴已就位',
-};
+import { useState } from 'react';
+import TriangleBackground from '@/components/TriangleBackground';
+import ChatWidget from '@/components/ChatWidget';
+import CommissionNotification from '@/components/CommissionNotification';
+import { useSecurity } from '@/hooks/useSecurity';
+
+// Download frequency limit
+const DOWNLOAD_LIMIT = 3;
+const DOWNLOAD_COOLDOWN = 10 * 1000;
 
 export default function Home() {
+  useSecurity();
+  
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [showLimitModal, setShowLimitModal] = useState(false);
+  const [limitMessage, setLimitMessage] = useState('');
+
+  // Calculator state
+  const [level1Count, setLevel1Count] = useState(10);
+  const [dailyTask, setDailyTask] = useState(100);
+  const [inviteMultiplier, setInviteMultiplier] = useState(10);
+  const [networkCount, setNetworkCount] = useState('1,110 लोग');
+  const [dailyIncome, setDailyIncome] = useState('₹360');
+  const [monthlyIncome, setMonthlyIncome] = useState('₹10,800');
+
+  // Download tracking
+  const [lastDownloadTime, setLastDownloadTime] = useState(0);
+  const [downloadCount, setDownloadCount] = useState(0);
+  const [downloadCountResetTime, setDownloadCountResetTime] = useState(Date.now() + 60 * 60 * 1000);
+
+  const canDownload = (): { allowed: boolean; message: string } => {
+    const now = Date.now();
+    
+    if (now > downloadCountResetTime) {
+      setDownloadCount(0);
+      setDownloadCountResetTime(now + 60 * 60 * 1000);
+    }
+    
+    if (now - lastDownloadTime < DOWNLOAD_COOLDOWN) {
+      const remainingSeconds = Math.ceil((DOWNLOAD_COOLDOWN - (now - lastDownloadTime)) / 1000);
+      return { allowed: false, message: `请等待 ${remainingSeconds} 秒后再试` };
+    }
+    
+    if (downloadCount >= DOWNLOAD_LIMIT) {
+      const resetMinutes = Math.ceil((downloadCountResetTime - now) / 60000);
+      return { allowed: false, message: `每小时最多下载 ${DOWNLOAD_LIMIT} 次，请 ${resetMinutes} 分钟后再试` };
+    }
+    
+    return { allowed: true, message: '' };
+  };
+
+  const handleDownload = () => {
+    const { allowed, message } = canDownload();
+    if (!allowed) {
+      setLimitMessage(message);
+      setShowLimitModal(true);
+      return;
+    }
+    
+    setLastDownloadTime(Date.now());
+    setDownloadCount(prev => prev + 1);
+    setShowDownloadModal(true);
+    setDownloadProgress(0);
+    
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 10;
+      setDownloadProgress(progress);
+      if (progress >= 100) clearInterval(interval);
+    }, 200);
+  };
+
+  const calculateEarnings = () => {
+    const level2Count = level1Count * inviteMultiplier;
+    const level3Count = level2Count * inviteMultiplier;
+    const total = level1Count + level2Count + level3Count;
+    
+    const daily = Math.round(
+      level1Count * dailyTask * 0.01 +
+      level2Count * dailyTask * 0.005 +
+      level3Count * dailyTask * 0.003
+    );
+    
+    setNetworkCount(`${total.toLocaleString()} लोग`);
+    setDailyIncome(`₹${daily.toLocaleString()}`);
+    setMonthlyIncome(`₹${(daily * 30).toLocaleString()}`);
+  };
+
   return (
-    <div className="flex h-full items-center justify-center bg-background text-foreground transition-colors duration-300 dark:bg-background dark:text-foreground overflow-hidden min-h-screen">
-      {/* 主容器 */}
-      <main className="flex w-full h-full max-w-3xl flex-col items-center justify-center px-16 py-32 sm:items-center">
-        <div className="flex flex-col items-center justify-between gap-4">
-           <Image
-            src="https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif"
-            alt="扣子编程 Logo"
-            width={156}
-            height={130}
-          />
-          <div>
-            <div className="flex flex-col items-center gap-2 text-center sm:items-center sm:text-center">
-              <h1 className="max-w-xl text-base font-semibold leading-tight tracking-tight text-foreground dark:text-foreground">
-                应用开发中
-              </h1>
-              <p className="max-w-2xl text-sm leading-8 text-muted-foreground dark:text-muted-foreground">
-                请稍后，页面即将呈现
+    <main className="relative min-h-screen">
+      {/* Background Animation */}
+      <TriangleBackground />
+
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Header */}
+        <header className="w-full py-4 px-4 sm:px-8 sticky top-0 z-50 backdrop-blur-md bg-black/50 border-b border-white/5">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <img 
+                src="/avatar-level1.jpeg"
+                alt="9INR"
+                className="w-10 h-10 rounded-xl object-cover"
+              />
+              <span className="text-white font-bold text-xl">9INR</span>
+              <span className="hidden sm:inline-block bg-yellow-400/20 text-yellow-400 text-xs px-2 py-1 rounded-full">टास्क प्लेटफॉर्म</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <nav className="hidden md:flex items-center gap-6">
+                <a href="#commission" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">तीन स्तरीय कमीशन</a>
+                <a href="#tasks" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">टास्क सिस्टम</a>
+                <a href="#calculator" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">कमाई कैलकुलेटर</a>
+              </nav>
+              <button 
+                onClick={handleDownload}
+                className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-2 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 text-sm"
+              >
+                अभी डाउनलोड करें
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Hero Section */}
+        <section className="w-full py-16 sm:py-24 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row items-center gap-12">
+              {/* Left Content */}
+              <div className="flex-1 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-4 py-2 mb-6">
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+                  <span className="text-yellow-400 text-sm font-medium">तीन स्तरीय वितरण · पासिव इनकम</span>
+                </div>
+                
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+                  दोस्तों को आमंत्रित करें<br/>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">तीन स्तरीय कमीशन कमाएं</span>
+                </h1>
+                
+                <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-xl">
+                  टास्क पूरा करके पैसे कमाएं, दोस्तों को आमंत्रित करके कमीशन कमाएं! तीन स्तरीय वितरण प्रणाली से आपके दोस्तों के टास्क से भी आपको मिलेगा!
+                </p>
+                
+                <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                  <button 
+                    onClick={handleDownload}
+                    className="group flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg shadow-yellow-400/20"
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.523 15.341c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9m-11.046 0c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9m11.4-6.02l1.97-3.41a.41.41 0 00-.71-.41l-2 3.46c-1.54-.7-3.26-1.09-5.14-1.09s-3.6.39-5.14 1.09l-2-3.46a.41.41 0 00-.71.41l1.97 3.41C2.69 11.08.34 14.53 0 18.5h24c-.34-3.97-2.69-7.42-6.12-9.18"/>
+                    </svg>
+                    <span>ऐप डाउनलोड करें और कमाई शुरू करें</span>
+                  </button>
+                  
+                  <button className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
+                    <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-yellow-400/50 transition-colors">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                    <span>वीडियो देखें</span>
+                  </button>
+                </div>
+                
+                {/* Stats */}
+                <div className="flex items-center gap-8 mt-12 justify-center lg:justify-start">
+                  <div className="text-center">
+                    <div className="text-3xl font-black text-yellow-400">10M+</div>
+                    <div className="text-gray-500 text-sm">डाउनलोड</div>
+                  </div>
+                  <div className="w-px h-10 bg-white/10"></div>
+                  <div className="text-center">
+                    <div className="text-3xl font-black text-yellow-400">4.8</div>
+                    <div className="text-gray-500 text-sm">रेटिंग</div>
+                  </div>
+                  <div className="w-px h-10 bg-white/10"></div>
+                  <div className="text-center">
+                    <div className="text-3xl font-black text-yellow-400">₹50K+</div>
+                    <div className="text-gray-500 text-sm">दैनिक कमीशन</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Right - App Preview */}
+              <div className="flex-1 flex justify-center">
+                <div className="relative">
+                  <div className="w-64 h-auto rounded-3xl overflow-hidden shadow-2xl border border-white/10" style={{ animation: 'float 3s ease-in-out infinite' }}>
+                    <img 
+                      src="/avatar-level1.jpeg"
+                      alt="9INR App"
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  <div className="absolute inset-0 w-64 h-full rounded-3xl bg-yellow-400 opacity-10 blur-3xl -z-10"></div>
+                  
+                  {/* Floating Badges */}
+                  <div className="absolute -right-4 top-1/4 bg-green-500 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg" style={{ animation: 'float 2s ease-in-out infinite 0.5s' }}>
+                    +₹1000 आज का कमीशन
+                  </div>
+                  <div className="absolute -left-4 bottom-1/4 bg-yellow-500 text-black text-sm font-bold py-2 px-4 rounded-full shadow-lg" style={{ animation: 'float 2s ease-in-out infinite 1s' }}>
+                    तीन स्तरीय कमीशन
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Commission System Section */}
+        <section id="commission" className="w-full py-16 px-4 bg-gradient-to-b from-transparent via-yellow-400/5 to-transparent">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+                तीन स्तरीय <span className="text-yellow-400">कमीशन प्रणाली</span>
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                दोस्तों को आमंत्रित करें और तीन स्तरों तक कमीशन कमाएं। आपका नेटवर्क जितना सक्रिय, उतना अधिक पासिव इनकम!
               </p>
+            </div>
+            
+            {/* Commission Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              {/* Level 1 */}
+              <div className="relative bg-gradient-to-br from-yellow-400/20 to-yellow-600/10 rounded-3xl p-6 border border-yellow-400/30 overflow-hidden group hover:border-yellow-400/50 transition-all">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center overflow-hidden shadow-lg">
+                      <img src="/avatar-level1.jpeg" alt="Level 1" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <div className="text-white font-bold">पहला स्तर</div>
+                      <div className="text-gray-400 text-sm">सीधे रेफरल</div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">प्राप्ति टास्क कमीशन</span>
+                      <span className="text-yellow-400 font-black text-2xl">1.0%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">भुगतान टास्क कमीशन</span>
+                      <span className="text-yellow-400 font-black text-2xl">0.8%</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 टास्क पर</div>
+                    <div className="text-yellow-400 font-bold text-lg">₹10 कमाएं</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Level 2 */}
+              <div className="relative bg-gradient-to-br from-green-400/20 to-green-600/10 rounded-3xl p-6 border border-green-400/30 overflow-hidden group hover:border-green-400/50 transition-all">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-green-400/10 rounded-full blur-3xl"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center overflow-hidden shadow-lg">
+                      <img src="/avatar-level2.jpeg" alt="Level 2" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <div className="text-white font-bold">दूसरा स्तर</div>
+                      <div className="text-gray-400 text-sm">अप्रत्यक्ष रेफरल</div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">प्राप्ति टास्क कमीशन</span>
+                      <span className="text-green-400 font-black text-2xl">0.5%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">भुगतान टास्क कमीशन</span>
+                      <span className="text-green-400 font-black text-2xl">0.4%</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 टास्क पर</div>
+                    <div className="text-green-400 font-bold text-lg">₹5 कमाएं</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Level 3 */}
+              <div className="relative bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-3xl p-6 border border-blue-400/30 overflow-hidden group hover:border-blue-400/50 transition-all">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center overflow-hidden shadow-lg">
+                      <img src="/avatar-level3.jpeg" alt="Level 3" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <div className="text-white font-bold">तीसरा स्तर</div>
+                      <div className="text-gray-400 text-sm">दूर का रेफरल</div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">प्राप्ति टास्क कमीशन</span>
+                      <span className="text-blue-400 font-black text-2xl">0.3%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">भुगतान टास्क कमीशन</span>
+                      <span className="text-blue-400 font-black text-2xl">0.2%</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 टास्क पर</div>
+                    <div className="text-blue-400 font-bold text-lg">₹3 कमाएं</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Example */}
+            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-yellow-400/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl">💡</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-bold mb-2">कमाई का उदाहरण</h4>
+                  <p className="text-gray-300 text-sm leading-relaxed">
+                    आपने <span className="text-yellow-400 font-bold">A</span> को आमंत्रित किया, A ने <span className="text-green-400 font-bold">B</span> को, B ने <span className="text-blue-400 font-bold">C</span> को<br/>
+                    • A ने ₹1000 का प्राप्ति टास्क किया → आपको <span className="text-yellow-400 font-bold">₹10</span><br/>
+                    • B ने ₹1000 का प्राप्ति टास्क किया → आपको <span className="text-green-400 font-bold">₹5</span><br/>
+                    • C ने ₹1000 का प्राप्ति टास्क किया → आपको <span className="text-blue-400 font-bold">₹3</span><br/>
+                    <span className="text-white font-medium">पासिव इनकम: जब तक आपका नेटवर्क सक्रिय है, आप हर दिन कमीशन कमा रहे हैं!</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Task System Section */}
+        <section id="tasks" className="w-full py-16 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+                दोहरी टास्क <span className="text-yellow-400">आसान कमाई</span>
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                सरल टास्क, 30 मिनट में पूरा। प्राप्ति और भुगतान दोनों विकल्प, लचीली कमाई!
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* 代收任务 */}
+              <div className="bg-gradient-to-br from-green-500/10 to-green-600/5 rounded-3xl p-8 border border-green-500/20 hover:border-green-500/40 transition-all">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 rounded-2xl bg-green-500/20 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white">प्राप्ति टास्क</h3>
+                    <p className="text-green-400">पैसे प्राप्त करें और पुष्टि करें</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-gray-300">निर्दिष्ट खाते में पैसे प्राप्त करें</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-gray-300">प्राप्ति की पुष्टि करें और स्क्रीनशॉट अपलोड करें</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-gray-300">टास्क रिवार्ड + कमीशन प्राप्त करें</span>
+                  </div>
+                </div>
+                <div className="mt-6 pt-6 border-t border-white/10">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">अनुमानित कमाई</span>
+                    <span className="text-green-400 font-bold text-xl">प्रति टास्क +1%~2%</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* 代付任务 */}
+              <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 rounded-3xl p-8 border border-blue-500/20 hover:border-blue-500/40 transition-all">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white">भुगतान टास्क</h3>
+                    <p className="text-blue-400">निर्दिष्ट खाते में भुगतान करें</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-gray-300">निर्दिष्ट खाते में भुगतान करें</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-gray-300">भुगतान स्क्रीनशॉट अपलोड करें</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-gray-300">टास्क रिवार्ड + कमीशन प्राप्त करें</span>
+                  </div>
+                </div>
+                <div className="mt-6 pt-6 border-t border-white/10">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">अनुमानित कमाई</span>
+                    <span className="text-blue-400 font-bold text-xl">प्रति टास्क +0.8%~1.5%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Calculator Section */}
+        <section id="calculator" className="w-full py-16 px-4 bg-gradient-to-b from-transparent via-yellow-400/5 to-transparent">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+                कमाई <span className="text-yellow-400">कैलकुलेटर</span>
+              </h2>
+              <p className="text-gray-400">देखें आपका नेटवर्क कितना पासिव इनकम ला सकता है</p>
+            </div>
+            
+            <div className="bg-white/5 rounded-3xl p-8 border border-white/10">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">पहले स्तर के एजेंट</label>
+                  <input 
+                    type="number" 
+                    value={level1Count}
+                    onChange={(e) => setLevel1Count(Number(e.target.value))}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xl font-bold focus:border-yellow-400/50 focus:outline-none" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">प्रति दिन टास्क राशि (₹)</label>
+                  <input 
+                    type="number" 
+                    value={dailyTask}
+                    onChange={(e) => setDailyTask(Number(e.target.value))}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xl font-bold focus:border-yellow-400/50 focus:outline-none" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">आमंत्रण गुणक</label>
+                  <input 
+                    type="number" 
+                    value={inviteMultiplier}
+                    onChange={(e) => setInviteMultiplier(Number(e.target.value))}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xl font-bold focus:border-yellow-400/50 focus:outline-none" 
+                  />
+                </div>
+              </div>
+              
+              <button 
+                onClick={calculateEarnings}
+                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] mb-8"
+              >
+                मेरी कमाई की गणना करें
+              </button>
+              
+              {/* Results */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-yellow-400/10 rounded-xl p-4 border border-yellow-400/20">
+                  <div className="text-gray-400 text-sm mb-1">आपका नेटवर्क</div>
+                  <div className="text-yellow-400 font-black text-3xl">{networkCount}</div>
+                  <div className="text-gray-500 text-xs">10 + 100 + 1000</div>
+                </div>
+                <div className="bg-green-400/10 rounded-xl p-4 border border-green-400/20">
+                  <div className="text-gray-400 text-sm mb-1">दैनिक कमीशन</div>
+                  <div className="text-green-400 font-black text-3xl">{dailyIncome}</div>
+                  <div className="text-gray-500 text-xs">पासिव इनकम</div>
+                </div>
+                <div className="bg-blue-400/10 rounded-xl p-4 border border-blue-400/20 col-span-1 sm:col-span-2">
+                  <div className="text-gray-400 text-sm mb-1">मासिक कमीशन</div>
+                  <div className="text-blue-400 font-black text-3xl">{monthlyIncome}</div>
+                  <div className="text-gray-500 text-xs">बिना कुछ किए हर महीने कमाएं!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="w-full py-8 px-4 border-t border-white/5">
+          <div className="max-w-7xl mx-auto text-center">
+            <p className="text-gray-500 text-sm">
+              © 2024 9INR. All rights reserved. | भारत का सबसे भरोसेमंद टास्क प्लेटफॉर्म
+            </p>
+          </div>
+        </footer>
+      </div>
+
+      {/* Chat Widget */}
+      <ChatWidget />
+
+      {/* Commission Notification */}
+      <CommissionNotification />
+
+      {/* Download Modal */}
+      {showDownloadModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={(e) => e.target === e.currentTarget && setShowDownloadModal(false)}>
+          <div className="bg-gray-900 rounded-3xl p-8 max-w-md w-full border border-yellow-400/30 shadow-2xl">
+            <div className="text-center">
+              <img 
+                src="/avatar-level1.jpeg"
+                alt="9INR"
+                className="w-20 h-20 rounded-2xl mx-auto mb-4 object-cover"
+              />
+              <h3 className="text-2xl font-bold text-white mb-2">9INR डाउनलोड करें</h3>
+              <p className="text-gray-400 mb-6">आपका डाउनलोड शुरू हो रहा है...</p>
+              
+              <div className="bg-white/5 rounded-xl p-4 mb-6">
+                <div className="flex items-center justify-center gap-2 text-yellow-400 mb-2">
+                  <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  <span className="font-medium">डाउनलोड हो रहा है...</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="bg-yellow-400 h-2 rounded-full transition-all duration-200" style={{ width: `${downloadProgress}%` }}></div>
+                </div>
+              </div>
+              
+              <button className="text-gray-400 hover:text-white transition-colors" onClick={() => setShowDownloadModal(false)}>
+                बंद करें
+              </button>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      )}
+
+      {/* Limit Modal */}
+      {showLimitModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={(e) => e.target === e.currentTarget && setShowLimitModal(false)}>
+          <div className="bg-gray-900 rounded-3xl p-8 max-w-md w-full border border-red-400/30 shadow-2xl">
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">下载受限</h3>
+              <p className="text-gray-400 mb-6">{limitMessage}</p>
+              <button className="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-xl transition-colors" onClick={() => setShowLimitModal(false)}>
+                关闭
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </main>
   );
 }

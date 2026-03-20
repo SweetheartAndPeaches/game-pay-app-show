@@ -1,3 +1,5 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
 const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 
@@ -32,38 +34,23 @@ const SYSTEM_PROMPT = `你是一个热情的印度营销专家，名字叫Raju�
 - 引导用户下载APP开始赚钱
 - 用用户提问的语言回复`;
 
-module.exports = async function handler(req, res) {
-  // CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const { messages } = req.body;
-
-  if (!messages || !Array.isArray(messages)) {
-    return res.status(400).json({ error: 'Messages are required' });
-  }
-
-  if (!NVIDIA_API_KEY) {
-    console.error('[Chat] NVIDIA_API_KEY is not configured');
-    return res.status(500).json({ error: 'AI service not configured' });
-  }
-
-  const allMessages = [
-    { role: 'system', content: SYSTEM_PROMPT },
-    ...messages
-  ];
-
+export async function POST(request: NextRequest) {
   try {
-    console.log('[Chat] Sending request to NVIDIA API...');
+    const { messages } = await request.json();
+
+    if (!messages || !Array.isArray(messages)) {
+      return NextResponse.json({ error: 'Messages are required' }, { status: 400 });
+    }
+
+    if (!NVIDIA_API_KEY) {
+      console.error('[Chat] NVIDIA_API_KEY is not configured');
+      return NextResponse.json({ error: 'AI service not configured' }, { status: 500 });
+    }
+
+    const allMessages = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...messages
+    ];
 
     const response = await fetch(NVIDIA_API_URL, {
       method: 'POST',
@@ -84,12 +71,12 @@ module.exports = async function handler(req, res) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('[Chat] API error:', response.status, errorText);
-      return res.status(500).json({ error: `API error: ${response.status}` });
+      return NextResponse.json({ error: `API error: ${response.status}` }, { status: 500 });
     }
 
     const reader = response.body?.getReader();
     if (!reader) {
-      return res.status(500).json({ error: 'No reader available' });
+      return NextResponse.json({ error: 'No reader available' }, { status: 500 });
     }
 
     const decoder = new TextDecoder();
@@ -115,18 +102,16 @@ module.exports = async function handler(req, res) {
             if (content) {
               fullContent += content;
             }
-          } catch (e) {
+          } catch {
             // Skip invalid JSON
           }
         }
       }
     }
 
-    console.log('[Chat] Response completed, length:', fullContent.length);
-    return res.status(200).json({ content: fullContent });
-
+    return NextResponse.json({ content: fullContent });
   } catch (error) {
     console.error('[Chat] Error:', error);
-    return res.status(500).json({ error: 'Failed to get response from AI' });
+    return NextResponse.json({ error: 'Failed to get response from AI' }, { status: 500 });
   }
-};
+}
