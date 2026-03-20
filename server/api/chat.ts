@@ -1,7 +1,10 @@
 import type { Request, Response } from 'express';
+import OpenAI from 'openai';
 
-const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
-const NVIDIA_API_KEY = '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';
+const openai = new OpenAI({
+  apiKey: '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',
+  baseURL: 'https://integrate.api.nvidia.com/v1',
+});
 
 const SYSTEM_PROMPT = `你是一个热情的印度营销专家，名字叫Raju。你正在推广9INR任务平台。
 
@@ -59,74 +62,46 @@ export async function handleChat(req: Request, res: Response) {
 
   // Add system prompt
   const allMessages = [
-    { role: 'system', content: SYSTEM_PROMPT },
+    { role: 'system' as const, content: SYSTEM_PROMPT },
     ...messages
   ];
 
   try {
-    const response = await fetch(NVIDIA_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${NVIDIA_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'minimaxai/minimax-m2.5',
-        messages: allMessages,
-        temperature: 1,
-        top_p: 0.95,
-        max_tokens: 2048,
-        stream: true
-      })
-    });
+    console.log('[Chat] Sending request to NVIDIA API...');
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
+    const completion = await openai.chat.completions.create({
+      model: 'minimaxai/minimax-m2.5',
+      messages: allMessages,
+      temperature: 1,
+      top_p: 0.95,
+      max_tokens: 2048,
+      stream: true,
+    });
 
     // Set headers for SSE
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
 
-    const reader = response.body?.getReader();
-    if (!reader) {
-      throw new Error('No reader available');
-    }
-
-    const decoder = new TextDecoder();
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split('\n');
-
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6);
-          if (data === '[DONE]') {
-            res.write('data: [DONE]\n\n');
-            continue;
-          }
-          
-          try {
-            const parsed = JSON.parse(data);
-            const content = parsed.choices?.[0]?.delta?.content;
-            if (content) {
-              res.write(`data: ${JSON.stringify({ content })}\n\n`);
-            }
-          } catch (e) {
-            // Skip invalid JSON
-          }
-        }
+    // Stream the response
+    for await (const chunk of completion) {
+      const content = chunk.choices[0]?.delta?.content || '';
+      if (content) {
+        res.write(`data: ${JSON.stringify({ content })}\n\n`);
       }
     }
 
+    res.write('data: [DONE]\n\n');
     res.end();
+    console.log('[Chat] Stream completed');
   } catch (error) {
-    console.error('Chat API error:', error);
-    res.status(500).json({ error: 'Failed to get response from AI' });
+    console.error('[Chat] Error:', error);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Failed to get response from AI' });
+    } else {
+      res.write(`data: ${JSON.stringify({ content: '抱歉，我遇到点问题。请稍后再试。🙏' })}\n\n`);
+      res.write('data: [DONE]\n\n');
+      res.end();
+    }
   }
 }
