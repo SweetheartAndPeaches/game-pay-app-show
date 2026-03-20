@@ -1,5 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
 const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 
@@ -34,8 +32,8 @@ const SYSTEM_PROMPT = `你是一个热情的印度营销专家，名字叫Raju�
 - 引导用户下载APP开始赚钱
 - 用用户提问的语言回复`;
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS 处理
+module.exports = async function handler(req, res) {
+  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -65,7 +63,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   ];
 
   try {
-    console.log('[Chat] Sending request to NVIDIA API (z-ai/glm5)...');
+    console.log('[Chat] Sending request to NVIDIA API...');
 
     const response = await fetch(NVIDIA_API_URL, {
       method: 'POST',
@@ -89,7 +87,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: `API error: ${response.status}` });
     }
 
-    // 对于 Vercel，使用非流式响应更稳定
     const reader = response.body?.getReader();
     if (!reader) {
       return res.status(500).json({ error: 'No reader available' });
@@ -126,12 +123,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     console.log('[Chat] Response completed, length:', fullContent.length);
-    
-    // 返回完整响应
     return res.status(200).json({ content: fullContent });
 
   } catch (error) {
     console.error('[Chat] Error:', error);
     return res.status(500).json({ error: 'Failed to get response from AI' });
   }
-}
+};

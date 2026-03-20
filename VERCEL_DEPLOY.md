@@ -1,137 +1,112 @@
 # Vercel 部署指南
 
-## 📋 部署前准备
+## 部署步骤
 
-### 1. 确保项目已推送到 GitHub
+### 1. 准备工作
+确保项目代码已提交到 Git 仓库。
 
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-git push -u origin main
-```
+### 2. 在 Vercel 创建项目
+1. 访问 [Vercel](https://vercel.com)
+2. 点击 "Import Project"
+3. 选择你的 Git 仓库
+4. Vercel 会自动检测项目配置
 
-### 2. 安装 Vercel CLI（可选）
+### 3. 配置环境变量
+在 Vercel 项目设置中添加环境变量：
 
-```bash
-npm i -g vercel
-```
+| 变量名 | 值 | 环境 |
+|--------|-----|------|
+| `NVIDIA_API_KEY` | 你的NVIDIA API密钥 | Production, Preview |
 
----
+**重要**: 不要将 API Key 硬编码在代码中！
 
-## 🚀 方式一：通过 Vercel 网站部署（推荐）
+### 4. 部署配置
+项目已预配置：
+- `vercel.json` - Vercel 部署配置
+- `api/chat.js` - Serverless Function (Node.js)
+- `build:vercel` - Vercel 构建脚本
 
-### Step 1: 登录 Vercel
+### 5. 触发部署
+- 推送代码到 main 分支会自动触发部署
+- 或在 Vercel 控制台手动触发
 
-访问 [vercel.com](https://vercel.com)，使用 GitHub 账号登录。
-
-### Step 2: 导入项目
-
-1. 点击 **"Add New..."** → **"Project"**
-2. 选择你的 GitHub 仓库
-3. 点击 **"Import"**
-
-### Step 3: 配置项目
-
-| 配置项 | 值 |
-|--------|------|
-| **Framework Preset** | Other |
-| **Root Directory** | `./` |
-| **Build Command** | `pnpm run build:vercel` |
-| **Output Directory** | `dist` |
-| **Install Command** | `pnpm install` |
-
-### Step 4: 配置环境变量
-
-在 **"Environment Variables"** 部分添加：
-
-| 变量名 | 值 |
-|--------|------|
-| `NVIDIA_API_KEY` | `nvapi-xxx`（你的 API Key） |
-
-### Step 5: 部署
-
-点击 **"Deploy"**，等待部署完成。
-
----
-
-## 🖥️ 方式二：通过 CLI 部署
-
-```bash
-# 登录 Vercel
-vercel login
-
-# 部署到生产环境
-vercel --prod
-
-# 设置环境变量
-vercel env add NVIDIA_API_KEY
-# 粘贴你的 API Key，选择 Production
-```
-
----
-
-## ⚙️ 项目结构说明
+## 文件结构
 
 ```
 .
-├── api/                  # Vercel Serverless Functions
-│   └── chat.ts          # AI 聊天 API
-├── dist/                 # Vite 构建输出（静态文件）
-├── src/                  # 前端源码
+├── api/
+│   └── chat.js          # Vercel Serverless Function (Node.js)
+├── src/
+│   ├── main.ts          # 前端入口
+│   └── security.ts      # 安全防护
+├── dist/                # 构建输出
 ├── vercel.json          # Vercel 配置
 └── package.json
 ```
 
----
+## API 端点
 
-## 🔧 常见问题
+### POST /api/chat
+AI 聊天接口
 
-### Q: 部署后 API 返回 500 错误？
+**请求体**:
+```json
+{
+  "messages": [
+    { "role": "user", "content": "你好" }
+  ]
+}
+```
 
-**A:** 检查环境变量是否正确配置：
-1. 进入 Vercel Dashboard
-2. 选择项目 → Settings → Environment Variables
-3. 确认 `NVIDIA_API_KEY` 已添加且值正确
+**响应**:
+```json
+{
+  "content": "你好！欢迎来到9INR！🎉"
+}
+```
 
-### Q: 页面刷新后显示 404？
+## 环境变量
 
-**A:** 检查 `vercel.json` 中的 rewrites 配置是否正确。
+| 变量 | 说明 | 是否必需 |
+|------|------|---------|
+| `NVIDIA_API_KEY` | NVIDIA API 密钥 | 是 |
 
-### Q: 如何查看部署日志？
+## 常见问题
 
-**A:** 
-1. Vercel Dashboard → 项目 → Deployments
-2. 点击具体部署 → 查看 Build Logs 和 Runtime Logs
+### Q: 部署后 AI 聊天不工作？
+A: 检查 Vercel 环境变量中是否已配置 `NVIDIA_API_KEY`
 
-### Q: 如何更新部署？
+### Q: 如何查看日志？
+A: 在 Vercel 控制台 > 项目 > Deployments > 选择部署 > Logs
 
-**A:** 推送新代码到 GitHub，Vercel 会自动触发重新部署。
+### Q: 如何重新部署？
+A: 推送新代码到 Git 仓库，或点击 "Redeploy" 按钮
 
----
+## 本地测试
 
-## 📝 部署后检查清单
+```bash
+# 安装依赖
+pnpm install
 
-- [ ] 网站可以正常访问
-- [ ] AI 聊天功能正常
-- [ ] 下载功能正常
-- [ ] 环境变量已配置
-- [ ] 自定义域名已绑定（如需要）
+# 创建 .env 文件
+echo "NVIDIA_API_KEY=your_api_key_here" > .env
 
----
+# 构建前端
+pnpm run build:vercel
 
-## 🌐 自定义域名
+# 本地运行（需要安装 vercel cli）
+npx vercel dev
+```
 
-1. Vercel Dashboard → 项目 → Settings → Domains
-2. 添加你的域名
-3. 按照提示配置 DNS 记录
+## 安全说明
 
----
+- API Key 存储在环境变量中，不会暴露到前端代码
+- 前端有基础安全防护（禁用 F12、右键菜单等）
+- API 有 CORS 保护
 
-## 💡 提示
+## 技术栈
 
-- **免费额度**：Vercel 免费套餐每月有 100GB 带宽和无限次部署
-- **冷启动**：Serverless Functions 首次调用可能有冷启动延迟
-- **日志**：使用 `console.log` 可以在 Vercel 日志中查看输出
+- **前端**: Vite + TypeScript + Tailwind CSS
+- **后端**: Vercel Serverless Functions (Node.js)
+- **AI**: NVIDIA API (z-ai/glm5 模型)
+- **部署**: Vercel
