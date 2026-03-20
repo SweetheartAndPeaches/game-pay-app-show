@@ -9,16 +9,23 @@ export function initApp(): void {
   app.innerHTML = `
     <!-- Background Animation -->
     <div class="bg-animation">
+      <!-- Wave Pattern -->
+      <div class="wave"></div>
+      
       <!-- Gradient Orbs -->
       <div class="gradient-orb orb-1"></div>
       <div class="gradient-orb orb-2"></div>
       <div class="gradient-orb orb-3"></div>
+      
       <!-- Particles will be added by JavaScript -->
       <div id="particles-container"></div>
+      
       <!-- Grid Lines -->
-      <div class="grid-line grid-line-h" style="top: 20%; animation-delay: 0s;"></div>
-      <div class="grid-line grid-line-h" style="top: 50%; animation-delay: 7s;"></div>
-      <div class="grid-line grid-line-h" style="top: 80%; animation-delay: 14s;"></div>
+      <div class="grid-line grid-line-h" style="top: 10%; animation-delay: 0s;"></div>
+      <div class="grid-line grid-line-h" style="top: 30%; animation-delay: 5s;"></div>
+      <div class="grid-line grid-line-h" style="top: 50%; animation-delay: 10s;"></div>
+      <div class="grid-line grid-line-h" style="top: 70%; animation-delay: 15s;"></div>
+      <div class="grid-line grid-line-h" style="top: 90%; animation-delay: 20s;"></div>
     </div>
 
     <div class="content-wrapper min-h-screen flex flex-col">
@@ -178,7 +185,7 @@ export function initApp(): void {
         const container = document.getElementById('particles-container');
         if (!container) return;
         
-        const particleCount = 30;
+        const particleCount = 50;
         
         for (let i = 0; i < particleCount; i++) {
           const particle = document.createElement('div');
@@ -187,24 +194,31 @@ export function initApp(): void {
           // Random position
           particle.style.left = Math.random() * 100 + '%';
           
-          // Random size (2px to 6px)
-          const size = 2 + Math.random() * 4;
+          // Random size (3px to 8px)
+          const size = 3 + Math.random() * 5;
           particle.style.width = size + 'px';
           particle.style.height = size + 'px';
           
-          // Random animation duration (15s to 35s)
-          const duration = 15 + Math.random() * 20;
+          // Random animation duration (10s to 25s)
+          const duration = 10 + Math.random() * 15;
           particle.style.animationDuration = duration + 's';
           
           // Random delay
-          particle.style.animationDelay = Math.random() * 20 + 's';
+          particle.style.animationDelay = Math.random() * 10 + 's';
           
           // Random opacity
-          particle.style.opacity = (0.3 + Math.random() * 0.7).toString();
+          particle.style.opacity = (0.5 + Math.random() * 0.5).toString();
           
           // Random color variation (yellow to orange)
           const hue = 40 + Math.random() * 20;
-          particle.style.background = 'hsl(' + hue + ', 100%, 50%)';
+          particle.style.background = 'hsl(' + hue + ', 100%, 55%)';
+          
+          container.appendChild(particle);
+        }
+      }
+      
+      // Initialize particles on load
+      createParticles();
           
           container.appendChild(particle);
         }
