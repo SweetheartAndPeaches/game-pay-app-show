@@ -300,7 +300,7 @@ export function initApp(): void {
                 <div class="relative">
                   <div class="flex items-center gap-3 mb-4">
                     <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center overflow-hidden shadow-lg">
-                      <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619221925059067956/image/generate_image_49300333-870e-4bdb-8204-a46a2eed0919.jpeg?sign=1805529675-88f584d89a-0-70a5f962580c6007b72ab179dd716c8658d9de8eb0ca5534223d2a0f6bb35370" alt="Level 1" class="w-full h-full object-cover" />
+                      <img src="/avatar-level1.jpeg" alt="Level 1" class="w-full h-full object-cover" />
                     </div>
                     <div>
                       <div class="text-white font-bold">पहला स्तर</div>
@@ -330,7 +330,7 @@ export function initApp(): void {
                 <div class="relative">
                   <div class="flex items-center gap-3 mb-4">
                     <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center overflow-hidden shadow-lg">
-                      <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619221925059067956/image/generate_image_b75e2038-c1cb-4c00-9152-0aec554300d3.jpeg?sign=1805529676-0127d6d2f2-0-ca32014721aa982060dff05158a2724a8f0707e2365e7be3ab3882e252ab5127" alt="Level 2" class="w-full h-full object-cover" />
+                      <img src="/avatar-level2.jpeg" alt="Level 2" class="w-full h-full object-cover" />
                     </div>
                     <div>
                       <div class="text-white font-bold">दूसरा स्तर</div>
@@ -360,7 +360,7 @@ export function initApp(): void {
                 <div class="relative">
                   <div class="flex items-center gap-3 mb-4">
                     <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center overflow-hidden shadow-lg">
-                      <img src="https://coze-coding-project.tos.coze.site/coze_storage_7619221925059067956/image/generate_image_f561bd80-2fee-4c9a-b0d8-511b0f02d574.jpeg?sign=1805529676-345ca2a4f3-0-b13152cdfc3bcbc491e7d12c8d9dd43ddfb9bb6b79b3a0e6452a6e63bf1b9273" alt="Level 3" class="w-full h-full object-cover" />
+                      <img src="/avatar-level3.jpeg" alt="Level 3" class="w-full h-full object-cover" />
                     </div>
                     <div>
                       <div class="text-white font-bold">तीसरा स्तर</div>
