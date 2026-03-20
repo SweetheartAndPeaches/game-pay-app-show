@@ -1,13 +1,14 @@
 /**
  * 安全防护脚本
  * 防止用户打开开发者工具、查看源码等操作
+ * सुरक्षा सुरक्षा स्क्रिप्ट - 印地语界面
  */
 
 export function initSecurity(): void {
   // 禁用右键菜单
   document.addEventListener('contextmenu', (e) => {
     e.preventDefault();
-    showToast('右键菜单已禁用 🔒');
+    showToast('राइट-क्लिक अक्षम है 🔒');
     return false;
   });
 
@@ -16,42 +17,42 @@ export function initSecurity(): void {
     // F12
     if (e.key === 'F12') {
       e.preventDefault();
-      showToast('开发者工具已禁用 🔒');
+      showToast('डेवलपर टूल अक्षम है 🔒');
       return false;
     }
 
     // Ctrl+Shift+I (开发者工具)
     if (e.ctrlKey && e.shiftKey && e.key === 'I') {
       e.preventDefault();
-      showToast('开发者工具已禁用 🔒');
+      showToast('डेवलपर टूल अक्षम है 🔒');
       return false;
     }
 
     // Ctrl+Shift+J (控制台)
     if (e.ctrlKey && e.shiftKey && e.key === 'J') {
       e.preventDefault();
-      showToast('开发者工具已禁用 🔒');
+      showToast('डेवलपर टूल अक्षम है 🔒');
       return false;
     }
 
     // Ctrl+Shift+C (元素选择器)
     if (e.ctrlKey && e.shiftKey && e.key === 'C') {
       e.preventDefault();
-      showToast('开发者工具已禁用 🔒');
+      showToast('डेवलपर टूल अक्षम है 🔒');
       return false;
     }
 
     // Ctrl+U (查看源码)
     if (e.ctrlKey && e.key === 'u') {
       e.preventDefault();
-      showToast('查看源码已禁用 🔒');
+      showToast('स्रोत कोड देखना अक्षम है 🔒');
       return false;
     }
 
     // Ctrl+S (保存)
     if (e.ctrlKey && e.key === 's') {
       e.preventDefault();
-      showToast('保存已禁用 🔒');
+      showToast('सहेजना अक्षम है 🔒');
       return false;
     }
 
@@ -70,7 +71,7 @@ export function initSecurity(): void {
     if (end - start > 100) {
       if (!devtoolsOpen) {
         devtoolsOpen = true;
-        showToast('⚠️ 请勿使用开发者工具');
+        showToast('⚠️ कृपया डेवलपर टूल का उपयोग न करें');
       }
     } else {
       devtoolsOpen = false;
@@ -97,8 +98,8 @@ export function initSecurity(): void {
     return false;
   });
 
-  console.log('%c⚠️ 警告', 'color: red; font-size: 40px; font-weight: bold;');
-  console.log('%c此页面已启用安全防护，请勿尝试破解！', 'color: red; font-size: 16px;');
+  console.log('%c⚠️ चेतावनी', 'color: red; font-size: 40px; font-weight: bold;');
+  console.log('%cइस पृष्ठ पर सुरक्षा सक्षम है, कृपया इसे बायपास करने का प्रयास न करें!', 'color: red; font-size: 16px;');
 }
 
 // Toast 提示
