@@ -8,10 +8,10 @@ cd "${COZE_WORKSPACE_PATH}"
 echo "Installing dependencies..."
 pnpm install --prefer-frozen-lockfile --prefer-offline --loglevel debug --reporter=append-only
 
-echo "Building the Next.js project..."
-npx next build
+echo "Building frontend with Vite..."
+npx vite build
 
 echo "Bundling server with tsup..."
-npx tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify
+npx tsup server/server.ts --format cjs --platform node --target node20 --outDir dist-server --no-splitting --no-minify --external vite
 
 echo "Build completed successfully!"

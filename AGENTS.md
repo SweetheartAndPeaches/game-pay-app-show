@@ -1,35 +1,31 @@
 # 项目上下文
 
-### 版本技术栈
+## 技术栈
 
-- **Framework**: Next.js 16 (App Router)
-- **Core**: React 19
-- **Language**: TypeScript 5
-- **UI 组件**: shadcn/ui (基于 Radix UI)
-- **Styling**: Tailwind CSS 4
+- **核心**: Vite 7, TypeScript, Express
+- **UI**: Tailwind CSS
 
 ## 目录结构
 
 ```
-├── public/                 # 静态资源
-├── scripts/                # 构建与启动脚本
-│   ├── build.sh            # 构建脚本
-│   ├── dev.sh              # 开发环境启动脚本
-│   ├── prepare.sh          # 预处理脚本
-│   └── start.sh            # 生产环境启动脚本
-├── src/
-│   ├── app/                # 页面路由与布局
-│   ├── components/ui/      # Shadcn UI 组件库
-│   ├── hooks/              # 自定义 Hooks
-│   ├── lib/                # 工具库
-│   │   └── utils.ts        # 通用工具函数 (cn)
-│   └── server.ts           # 自定义服务端入口
-├── next.config.ts          # Next.js 配置
-├── package.json            # 项目依赖管理
-└── tsconfig.json           # TypeScript 配置
+├── scripts/            # 构建与启动脚本
+│   ├── build.sh        # 构建脚本
+│   ├── dev.sh          # 开发环境启动脚本
+│   ├── prepare.sh      # 预处理脚本
+│   └── start.sh        # 生产环境启动脚本
+├── server/             # 服务端逻辑
+│   ├── routes/         # API 路由
+│   ├── server.ts       # Express 服务入口
+│   └── vite.ts         # Vite 中间件集成
+├── src/                # 前端源码
+│   ├── index.css       # 全局样式
+│   ├── index.ts        # 客户端入口
+│   └── main.ts         # 主逻辑
+├── index.html          # 入口 HTML
+├── package.json        # 项目依赖管理
+├── tsconfig.json       # TypeScript 配置
+└── vite.config.ts      # Vite 配置
 ```
-
-- 项目文件（如 app 目录、pages 目录、components 等）默认初始化到 `src/` 目录下。
 
 ## 包管理规范
 
@@ -42,13 +38,4 @@
 
 ## 开发规范
 
-- **项目理解加速**：初始可以依赖项目下`package.json`文件理解项目类型，如果没有或无法理解退化成阅读其他文件。
-- **Hydration 错误预防**：严禁在 JSX 渲染逻辑中直接使用 typeof window、Date.now()、Math.random() 等动态数据。必须使用 'use client' 并配合 useEffect + useState 确保动态内容仅在客户端挂载后渲染；同时严禁非法 HTML 嵌套（如 <p> 嵌套 <div>）。
-
-
-## UI 设计与组件规范 (UI & Styling Standards)
-
-- 模板默认预装核心组件库 `shadcn/ui`，位于`src/components/ui/`目录下
-- Next.js 项目**必须默认**采用 shadcn/ui 组件、风格和规范，**除非用户指定用其他的组件和规范。**
-
-
+- 使用 Tailwind CSS 进行样式开发

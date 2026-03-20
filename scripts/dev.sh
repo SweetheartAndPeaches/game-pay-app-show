@@ -29,6 +29,6 @@ kill_port_if_listening() {
 
 echo "Clearing port ${PORT} before start."
 kill_port_if_listening
-echo "Starting HTTP service on port ${PORT} for dev..."
+echo "Starting express + Vite dev server on port ${PORT}..."
 
-PORT=$PORT npx tsx watch src/server.ts
+PORT=$PORT npx tsx watch server/server.ts

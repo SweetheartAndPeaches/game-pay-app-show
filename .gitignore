@@ -1,5 +1,3 @@
-.next
-
 # Dependencies
 node_modules/
 .pnp
@@ -7,10 +5,9 @@ node_modules/
 
 # Production build
 dist/
+dist-server/
 build/
 out/
-.next/
-.rsbuild/
 
 # Testing
 coverage/
@@ -39,19 +36,10 @@ pids
 *.seed
 *.pid.lock
 
-# Diagnostic reports
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
 # Cache
 .cache/
-.parcel-cache/
 .eslintcache
 .stylelintcache
-.npm
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
 node-compile-cache/
 
 # Editor directories and files
@@ -64,37 +52,17 @@ node-compile-cache/
 *.njsproj
 *.sln
 *.sw?
-*.swp
-*.swo
-*~
 
 # OS files
 .DS_Store
 .DS_Store?
 ._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
-Desktop.ini
-
-# Temporary files
-*.tmp
-*.temp
-.tmp/
-.temp/
-
-# Optional files
-*.tgz
-*.gz
-*.zip
-*.tar
 
 # TypeScript
 *.tsbuildinfo
 
-# Misc
-.vercel
-.turbo
+# Vite
+.vite/
 
 .coze-logs
