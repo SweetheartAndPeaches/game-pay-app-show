@@ -1,6 +1,10 @@
 import { Router } from 'express';
+import { handleChat } from '../api/chat';
 
 const router = Router();
+
+// AI Chat API
+router.post('/api/chat', handleChat);
 
 // API 路由示例
 router.get('/api/hello', (req, res) => {

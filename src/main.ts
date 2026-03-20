@@ -149,6 +149,219 @@ function handleDownload(platform: string): void {
   }, 200);
 }
 
+// ===== Chat Widget System =====
+let chatMessages: Array<{ role: 'user' | 'assistant'; content: string }> = [];
+let isChatOpen = false;
+let isTyping = false;
+
+function createChatWidget(): void {
+  const chatWidget = document.createElement('div');
+  chatWidget.id = 'chat-widget';
+  chatWidget.innerHTML = `
+    <!-- Chat Toggle Button -->
+    <div id="chat-toggle" class="chat-toggle">
+      <div class="chat-toggle-icon">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+      </div>
+      <span class="chat-toggle-text">Help</span>
+      <span class="chat-notification-dot"></span>
+    </div>
+    
+    <!-- Chat Window -->
+    <div id="chat-window" class="chat-window">
+      <div class="chat-header">
+        <div class="chat-header-avatar">
+          <span>🇮🇳</span>
+        </div>
+        <div class="chat-header-info">
+          <div class="chat-header-name">Raju</div>
+          <div class="chat-header-status">
+            <span class="status-dot"></span>
+            Online
+          </div>
+        </div>
+        <button id="chat-close" class="chat-close">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div id="chat-messages" class="chat-messages">
+        <div class="chat-message assistant">
+          <div class="message-avatar">🇮🇳</div>
+          <div class="message-content">
+            <p>नमस्ते! 🙏 मैं Raju हूं, 9INR का मार्केटिंग एक्सपर्ट।</p>
+            <p>आपको किस बारे में जानकारी चाहिए? मैं आपकी भाषा में जवाब दूंगा! 😊</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="chat-input-container">
+        <input type="text" id="chat-input" class="chat-input" placeholder="अपना सवाल टाइप करें..." />
+        <button id="chat-send" class="chat-send">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(chatWidget);
+  
+  // Event listeners
+  document.getElementById('chat-toggle')?.addEventListener('click', toggleChat);
+  document.getElementById('chat-close')?.addEventListener('click', toggleChat);
+  document.getElementById('chat-send')?.addEventListener('click', sendMessage);
+  document.getElementById('chat-input')?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+}
+
+function toggleChat(): void {
+  const chatWindow = document.getElementById('chat-window');
+  const toggleBtn = document.getElementById('chat-toggle');
+  isChatOpen = !isChatOpen;
+  
+  if (isChatOpen) {
+    chatWindow?.classList.add('open');
+    toggleBtn?.classList.add('hidden');
+  } else {
+    chatWindow?.classList.remove('open');
+    toggleBtn?.classList.remove('hidden');
+  }
+}
+
+async function sendMessage(): Promise<void> {
+  const input = document.getElementById('chat-input') as HTMLInputElement;
+  const message = input?.value.trim();
+  
+  if (!message || isTyping) return;
+  
+  // Add user message
+  addMessage('user', message);
+  input.value = '';
+  
+  // Show typing indicator
+  isTyping = true;
+  showTypingIndicator();
+  
+  try {
+    // Call API
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [...chatMessages, { role: 'user', content: message }] })
+    });
+    
+    if (!response.ok) throw new Error('API error');
+    
+    // Remove typing indicator
+    hideTypingIndicator();
+    
+    // Create assistant message element
+    const messagesContainer = document.getElementById('chat-messages');
+    const assistantDiv = document.createElement('div');
+    assistantDiv.className = 'chat-message assistant';
+    assistantDiv.innerHTML = `
+      <div class="message-avatar">🇮🇳</div>
+      <div class="message-content"><p></p></div>
+    `;
+    messagesContainer?.appendChild(assistantDiv);
+    
+    const contentP = assistantDiv.querySelector('.message-content p') as HTMLElement;
+    let fullResponse = '';
+    
+    // Read stream
+    const reader = response.body?.getReader();
+    const decoder = new TextDecoder();
+    
+    while (reader) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      const chunk = decoder.decode(value, { stream: true });
+      const lines = chunk.split('\n');
+      
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6);
+          if (data === '[DONE]') continue;
+          
+          try {
+            const parsed = JSON.parse(data);
+            const content = parsed.content;
+            if (content) {
+              fullResponse += content;
+              contentP.textContent = fullResponse;
+              // Scroll to bottom
+              messagesContainer?.scrollTo(0, messagesContainer.scrollHeight);
+            }
+          } catch (e) {
+            // Skip invalid JSON
+          }
+        }
+      }
+    }
+    
+    // Save to history
+    chatMessages.push({ role: 'user', content: message });
+    chatMessages.push({ role: 'assistant', content: fullResponse });
+    
+  } catch (error) {
+    hideTypingIndicator();
+    addMessage('assistant', 'Sorry, मुझे थोड़ी समस्या हो रही है। कृपया बाद में पुनः प्रयास करें। 🙏');
+  }
+  
+  isTyping = false;
+}
+
+function addMessage(role: 'user' | 'assistant', content: string): void {
+  const messagesContainer = document.getElementById('chat-messages');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `chat-message ${role}`;
+  
+  if (role === 'assistant') {
+    messageDiv.innerHTML = `
+      <div class="message-avatar">🇮🇳</div>
+      <div class="message-content"><p>${content}</p></div>
+    `;
+  } else {
+    messageDiv.innerHTML = `
+      <div class="message-content"><p>${content}</p></div>
+    `;
+  }
+  
+  messagesContainer?.appendChild(messageDiv);
+  messagesContainer?.scrollTo(0, messagesContainer.scrollHeight);
+}
+
+function showTypingIndicator(): void {
+  const messagesContainer = document.getElementById('chat-messages');
+  const typingDiv = document.createElement('div');
+  typingDiv.id = 'typing-indicator';
+  typingDiv.className = 'chat-message assistant typing';
+  typingDiv.innerHTML = `
+    <div class="message-avatar">🇮🇳</div>
+    <div class="message-content typing-dots">
+      <span></span><span></span><span></span>
+    </div>
+  `;
+  messagesContainer?.appendChild(typingDiv);
+  messagesContainer?.scrollTo(0, messagesContainer.scrollHeight);
+}
+
+function hideTypingIndicator(): void {
+  document.getElementById('typing-indicator')?.remove();
+}
+
+function initChatWidget(): void {
+  createChatWidget();
+}
+
 // ===== Commission Notification System =====
 const indianNames = [
   'Priya', 'Amit', 'Neha', 'Rahul', 'Deepa', 'Vikram', 'Anjali', 'Suresh',
@@ -902,4 +1115,7 @@ export function initApp(): void {
 
   // Start commission notification system
   startNotificationSystem();
+  
+  // Initialize chat widget
+  initChatWidget();
 }
