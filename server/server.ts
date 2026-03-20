@@ -1,6 +1,8 @@
 // ABOUTME: Express server with Vite integration
 // ABOUTME: Handles API routes and serves frontend in dev/prod modes
 
+// Load environment variables from .env file
+import 'dotenv/config';
 import { createServer, type Server } from 'http';
 import express from 'express';
 import router from './routes/index';
