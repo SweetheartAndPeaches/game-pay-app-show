@@ -7,7 +7,21 @@ export function initApp(): void {
   }
 
   app.innerHTML = `
-    <div class="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex flex-col">
+    <!-- Background Animation -->
+    <div class="bg-animation">
+      <!-- Gradient Orbs -->
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
+      <!-- Particles will be added by JavaScript -->
+      <div id="particles-container"></div>
+      <!-- Grid Lines -->
+      <div class="grid-line grid-line-h" style="top: 20%; animation-delay: 0s;"></div>
+      <div class="grid-line grid-line-h" style="top: 50%; animation-delay: 7s;"></div>
+      <div class="grid-line grid-line-h" style="top: 80%; animation-delay: 14s;"></div>
+    </div>
+
+    <div class="content-wrapper min-h-screen flex flex-col">
       <!-- Header -->
       <header class="w-full py-6 px-4 sm:px-8">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
@@ -159,6 +173,46 @@ export function initApp(): void {
     </div>
 
     <script>
+      // Create floating particles
+      function createParticles() {
+        const container = document.getElementById('particles-container');
+        if (!container) return;
+        
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          
+          // Random position
+          particle.style.left = Math.random() * 100 + '%';
+          
+          // Random size (2px to 6px)
+          const size = 2 + Math.random() * 4;
+          particle.style.width = size + 'px';
+          particle.style.height = size + 'px';
+          
+          // Random animation duration (15s to 35s)
+          const duration = 15 + Math.random() * 20;
+          particle.style.animationDuration = duration + 's';
+          
+          // Random delay
+          particle.style.animationDelay = Math.random() * 20 + 's';
+          
+          // Random opacity
+          particle.style.opacity = (0.3 + Math.random() * 0.7).toString();
+          
+          // Random color variation (yellow to orange)
+          const hue = 40 + Math.random() * 20;
+          particle.style.background = 'hsl(' + hue + ', 100%, 50%)';
+          
+          container.appendChild(particle);
+        }
+      }
+      
+      // Initialize particles on load
+      createParticles();
+      
       function handleDownload(platform) {
         // Create download modal
         const modal = document.createElement('div');
