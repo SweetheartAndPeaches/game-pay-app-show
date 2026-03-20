@@ -357,42 +357,6 @@ async function sendMessage(): Promise<void> {
           }
         }
       }
-    } === '[DONE]') continue;
-          
-          try {
-            const parsed = JSON.parse(data);
-            const content = parsed.content;
-            if (content) {
-              fullResponse += content;
-              contentP.textContent = fullResponse;
-              // Scroll to bottom
-              messagesContainer?.scrollTo(0, messagesContainer.scrollHeight);
-            }
-          } catch (e) {
-            // Skip invalid JSON
-          }
-        }
-      }
-    }
-    
-    // Save to history
-    chatMessages.push({ role: 'user', content: message });
-    chatMessages.push({ role: 'assistant', content: fullResponse }); '[DONE]') continue;
-          
-          try {
-            const parsed = JSON.parse(data);
-            const content = parsed.content;
-            if (content) {
-              fullResponse += content;
-              contentP.textContent = fullResponse;
-              // Scroll to bottom
-              messagesContainer?.scrollTo(0, messagesContainer.scrollHeight);
-            }
-          } catch (e) {
-            // Skip invalid JSON
-          }
-        }
-      }
     }
     
     // Save to history
