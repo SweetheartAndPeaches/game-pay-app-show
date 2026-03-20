@@ -164,49 +164,38 @@ export function initApp(): void {
     <script>
       // ===== Triangle Particle Background Animation =====
       
-      // Particle interface
+      // Particle class (plain JavaScript)
       class TriangleParticle {
-        x: number;
-        y: number;
-        size: number;
-        speedY: number;
-        speedX: number;
-        opacity: number;
-        rotation: number;
-        rotationSpeed: number;
-        
-        constructor(canvasWidth: number, canvasHeight: number) {
+        constructor(canvasWidth, canvasHeight) {
           this.x = Math.random() * canvasWidth;
-          this.y = canvasHeight + Math.random() * 100;
-          this.size = 8 + Math.random() * 16;
-          this.speedY = -(0.3 + Math.random() * 0.7);  // 向上飘动
-          this.speedX = (Math.random() - 0.5) * 0.5;    // 轻微水平漂移
-          this.opacity = 0.2 + Math.random() * 0.5;
+          this.y = Math.random() * canvasHeight;
+          this.size = 15 + Math.random() * 25;
+          this.speedY = -(0.5 + Math.random() * 1.0);
+          this.speedX = (Math.random() - 0.5) * 0.8;
+          this.opacity = 0.3 + Math.random() * 0.5;
           this.rotation = Math.random() * Math.PI * 2;
-          this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+          this.rotationSpeed = (Math.random() - 0.5) * 0.03;
         }
         
-        update(canvasWidth: number, canvasHeight: number) {
+        update(canvasWidth, canvasHeight) {
           this.y += this.speedY;
           this.x += this.speedX;
           this.rotation += this.rotationSpeed;
           
-          // 边界检测：从顶部飘出后从底部重新进入
-          if (this.y < -30) {
-            this.y = canvasHeight + 30;
+          if (this.y < -50) {
+            this.y = canvasHeight + 50;
             this.x = Math.random() * canvasWidth;
           }
         }
       }
       
       // Initialize canvas and particles
-      const canvas = document.getElementById('bg-canvas') as HTMLCanvasElement;
+      const canvas = document.getElementById('bg-canvas');
       if (canvas) {
         const ctx = canvas.getContext('2d');
-        const particles: TriangleParticle[] = [];
-        const particleCount = 40;
+        const particles = [];
+        const particleCount = 60;
         
-        // Set canvas size
         function resizeCanvas() {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
@@ -214,15 +203,11 @@ export function initApp(): void {
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
-        // Create particles
         for (let i = 0; i < particleCount; i++) {
-          const p = new TriangleParticle(canvas.width, canvas.height);
-          p.y = Math.random() * canvas.height;  // 初始分布在整个画布
-          particles.push(p);
+          particles.push(new TriangleParticle(canvas.width, canvas.height));
         }
         
-        // Draw triangle shape
-        function drawTriangle(x: number, y: number, size: number, rotation: number, opacity: number) {
+        function drawTriangle(x, y, size, rotation, opacity) {
           if (!ctx) return;
           
           ctx.save();
@@ -230,28 +215,22 @@ export function initApp(): void {
           ctx.rotate(rotation);
           
           ctx.beginPath();
-          ctx.moveTo(0, -size);                    // 顶点
-          ctx.lineTo(-size * 0.6, size * 0.6);    // 左下
-          ctx.lineTo(size * 0.6, size * 0.6);     // 右下
+          ctx.moveTo(0, -size);
+          ctx.lineTo(-size * 0.6, size * 0.6);
+          ctx.lineTo(size * 0.6, size * 0.6);
           ctx.closePath();
           
-          // 9INR 金黄色
+          ctx.shadowColor = 'rgba(255, 215, 0, 0.8)';
+          ctx.shadowBlur = 15;
           ctx.fillStyle = 'rgba(255, 215, 0, ' + opacity + ')';
-          ctx.fill();
-          
-          // 添加发光效果
-          ctx.shadowColor = 'rgba(255, 215, 0, 0.5)';
-          ctx.shadowBlur = 10;
           ctx.fill();
           
           ctx.restore();
         }
         
-        // Animation loop
         function animate() {
           if (!ctx) return;
           
-          // Clear canvas with gradient background
           const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
           gradient.addColorStop(0, '#0a0a0a');
           gradient.addColorStop(0.5, '#1a1a1a');
@@ -259,8 +238,7 @@ export function initApp(): void {
           ctx.fillStyle = gradient;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           
-          // Update and draw particles
-          particles.forEach(p => {
+          particles.forEach(function(p) {
             p.update(canvas.width, canvas.height);
             drawTriangle(p.x, p.y, p.size, p.rotation, p.opacity);
           });
@@ -268,13 +246,14 @@ export function initApp(): void {
           requestAnimationFrame(animate);
         }
         
-        // Start animation
         animate();
+        console.log('Triangle animation started with', particleCount, 'particles');
+      } else {
+        console.error('Canvas not found');
       }
       
       // ===== Download Handler =====
-      // Mount to window for global access
-      (window as any).handleDownload = function(platform) {
+      window.handleDownload = function(platform) {
         // Create download modal
         const modal = document.createElement('div');
         modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4';
