@@ -28,31 +28,35 @@ function initBackgroundAnimation(): void {
 
   console.log('=== 9INR Triangle Animation Started ===');
 
-  const particles: TriangleParticle[] = [];
-  const particleCount = 80;
+  let particles: TriangleParticle[] = [];
+  let particleCount = 0;
 
-  // Resize canvas
+  // Resize canvas and recalculate particles
   function resizeCanvas(): void {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    console.log('Canvas size:', canvas.width, 'x', canvas.height);
+    
+    // 动态计算粒子数量（与NVIDIA版本一致）
+    particleCount = Math.floor((canvas.width * canvas.height) / 8000);
+    
+    // 重新生成粒子
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: 3 + Math.random() * 8,  // 3-11px
+        speedY: -(0.2 + Math.random() * 0.8),  // 更慢的飘动
+        speedX: (Math.random() - 0.5) * 0.3,
+        opacity: 0.1 + Math.random() * 0.6,  // 0.1-0.7
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.02
+      });
+    }
+    console.log('Canvas size:', canvas.width, 'x', canvas.height, '| Particles:', particleCount);
   }
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
-
-  // Create particles
-  for (let i = 0; i < particleCount; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: 20 + Math.random() * 30,
-      speedY: -(0.8 + Math.random() * 1.2),
-      speedX: (Math.random() - 0.5) * 1.0,
-      opacity: 0.5 + Math.random() * 0.5,
-      rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.04
-    });
-  }
 
   // Draw triangle
   function drawTriangle(x: number, y: number, size: number, rotation: number, opacity: number): void {
@@ -81,9 +85,8 @@ function initBackgroundAnimation(): void {
   function animate(): void {
     if (!ctx) return;
     
-    // Clear canvas
-    ctx.fillStyle = '#0a0a0a';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Clear canvas with transparent background
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Update and draw particles
     for (const p of particles) {
@@ -92,8 +95,8 @@ function initBackgroundAnimation(): void {
       p.rotation += p.rotationSpeed;
 
       // Reset if out of bounds
-      if (p.y < -60) {
-        p.y = canvas.height + 60;
+      if (p.y < -20) {
+        p.y = canvas.height + 20;
         p.x = Math.random() * canvas.width;
       }
 
