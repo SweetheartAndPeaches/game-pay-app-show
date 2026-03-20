@@ -13,8 +13,6 @@ const DOWNLOAD_COOLDOWN = 10 * 1000;
 export default function Home() {
   useSecurity();
   
-  const [showDownloadModal, setShowDownloadModal] = useState(false);
-  const [downloadProgress, setDownloadProgress] = useState(0);
   const [showLimitModal, setShowLimitModal] = useState(false);
   const [limitMessage, setLimitMessage] = useState('');
 
@@ -62,15 +60,9 @@ export default function Home() {
     
     setLastDownloadTime(Date.now());
     setDownloadCount(prev => prev + 1);
-    setShowDownloadModal(true);
-    setDownloadProgress(0);
     
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 10;
-      setDownloadProgress(progress);
-      if (progress >= 100) clearInterval(interval);
-    }, 200);
+    // 打开APK下载链接
+    window.open('https://d1lpd5tr8ui3gv.cloudfront.net/web/9inr/9inr.apk', '_blank');
   };
 
   const calculateEarnings = () => {
@@ -728,38 +720,6 @@ export default function Home() {
 
       {/* Commission Notification */}
       <CommissionNotification />
-
-      {/* Download Modal */}
-      {showDownloadModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={(e) => e.target === e.currentTarget && setShowDownloadModal(false)}>
-          <div className="bg-gray-900 rounded-3xl p-8 max-w-md w-full border border-yellow-400/30 shadow-2xl">
-            <div className="text-center">
-              <img 
-                src="/app-icon.png"
-                className="w-20 h-20 rounded-2xl mx-auto mb-4 object-cover"
-              />
-              <h3 className="text-2xl font-bold text-white mb-2">9INR डाउनलोड करें</h3>
-              <p className="text-gray-400 mb-6">आपका डाउनलोड शुरू हो रहा है...</p>
-              
-              <div className="bg-white/5 rounded-xl p-4 mb-6">
-                <div className="flex items-center justify-center gap-2 text-yellow-400 mb-2">
-                  <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                  </svg>
-                  <span className="font-medium">डाउनलोड हो रहा है...</span>
-                </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div className="bg-yellow-400 h-2 rounded-full transition-all duration-200" style={{ width: `${downloadProgress}%` }}></div>
-                </div>
-              </div>
-              
-              <button className="text-gray-400 hover:text-white transition-colors" onClick={() => setShowDownloadModal(false)}>
-                बंद करें
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Limit Modal */}
       {showLimitModal && (
