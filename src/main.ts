@@ -335,7 +335,11 @@ async function sendMessage(): Promise<void> {
     // Remove typing indicator
     hideTypingIndicator();
     
-    // Create assistant message element
+    // Get response data
+    const data = await response.json();
+    const fullResponse = data.content || '抱歉，我无法生成回复。🙏';
+    
+    // Add assistant message with typewriter effect
     const messagesContainer = document.getElementById('chat-messages');
     const assistantDiv = document.createElement('div');
     assistantDiv.className = 'chat-message assistant';
@@ -346,23 +350,30 @@ async function sendMessage(): Promise<void> {
     messagesContainer?.appendChild(assistantDiv);
     
     const contentP = assistantDiv.querySelector('.message-content p') as HTMLElement;
-    let fullResponse = '';
     
-    // Read stream
-    const reader = response.body?.getReader();
-    const decoder = new TextDecoder();
+    // Typewriter effect
+    let index = 0;
+    const typeInterval = setInterval(() => {
+      if (index < fullResponse.length) {
+        contentP.textContent += fullResponse[index];
+        index++;
+        messagesContainer?.scrollTo(0, messagesContainer.scrollHeight);
+      } else {
+        clearInterval(typeInterval);
+      }
+    }, 20);
     
-    while (reader) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      
-      const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split('\n');
-      
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6);
-          if (data === '[DONE]') continue;
+    // Save to history
+    chatMessages.push({ role: 'user', content: message });
+    chatMessages.push({ role: 'assistant', content: fullResponse });
+    
+  } catch (error) {
+    hideTypingIndicator();
+    addMessage('assistant', 'Sorry, मुझे थोड़ी समस्या हो रही है। कृपया बाद में पुनः प्रयास करें। 🙏');
+  }
+  
+  isTyping = false;
+} '[DONE]') continue;
           
           try {
             const parsed = JSON.parse(data);
