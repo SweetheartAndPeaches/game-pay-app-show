@@ -12,9 +12,11 @@ export function initApp(): void {
       <header class="w-full py-6 px-4 sm:px-8">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center">
-              <span class="text-black font-bold text-xl">9</span>
-            </div>
+            <img 
+              src="https://code.coze.cn/api/sandbox/coze_coding/file/proxy?expire_time=-1&file_path=assets%2F%E7%94%BB%E6%9D%BF+1.png&nonce=6d3f72c8-f4f7-4ad9-bcc3-823fd80794f8&project_id=7619222010605879330&sign=5dae79049555ccd18cf6790ff76b33e7f16dd8c15328fb199be74d824d53a75f"
+              alt="9INR"
+              class="w-10 h-10 rounded-xl object-cover"
+            />
             <span class="text-white font-bold text-xl">9INR</span>
           </div>
           <nav class="hidden sm:flex items-center gap-6">
@@ -30,20 +32,12 @@ export function initApp(): void {
         <div class="max-w-6xl mx-auto text-center">
           <!-- App Icon -->
           <div class="mb-8 relative inline-block">
-            <div class="w-48 h-48 sm:w-56 sm:h-56 rounded-[3rem] bg-gradient-to-br from-gray-800 to-black p-1 shadow-2xl" style="animation: float 3s ease-in-out infinite;">
-              <div class="w-full h-full rounded-[2.75rem] bg-black flex flex-col items-center justify-center overflow-hidden relative">
-                <!-- Black circle with 9 -->
-                <div class="absolute top-0 w-full h-[75%] bg-black rounded-t-[2.75rem] flex items-center justify-center">
-                  <div class="relative">
-                    <span class="text-[120px] sm:text-[140px] font-black" style="color: #FFD700; -webkit-text-stroke: 3px black;">9</span>
-                  </div>
-                </div>
-                <!-- Yellow arc at bottom -->
-                <div class="absolute bottom-0 w-full h-[30%] bg-gradient-to-t from-yellow-400 to-yellow-500 rounded-b-[2.75rem] flex items-center justify-center">
-                  <span class="text-black font-bold text-sm sm:text-base tracking-wide">9INR.VIP</span>
-                </div>
-              </div>
-            </div>
+            <img 
+              src="https://code.coze.cn/api/sandbox/coze_coding/file/proxy?expire_time=-1&file_path=assets%2F%E7%94%BB%E6%9D%BF+1.png&nonce=6d3f72c8-f4f7-4ad9-bcc3-823fd80794f8&project_id=7619222010605879330&sign=5dae79049555ccd18cf6790ff76b33e7f16dd8c15328fb199be74d824d53a75f"
+              alt="9INR App Icon"
+              class="w-48 h-48 sm:w-56 sm:h-56 rounded-[3rem] shadow-2xl object-cover"
+              style="animation: float 3s ease-in-out infinite;"
+            />
             <!-- Glow effect -->
             <div class="absolute inset-0 w-48 h-48 sm:w-56 sm:h-56 rounded-[3rem] bg-yellow-400 opacity-20 blur-3xl -z-10"></div>
           </div>
@@ -147,9 +141,11 @@ export function initApp(): void {
       <footer id="about" class="w-full py-8 px-4 border-t border-white/10">
         <div class="max-w-6xl mx-auto text-center">
           <div class="flex items-center justify-center gap-2 mb-4">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center">
-              <span class="text-black font-bold text-sm">9</span>
-            </div>
+            <img 
+              src="https://code.coze.cn/api/sandbox/coze_coding/file/proxy?expire_time=-1&file_path=assets%2F%E7%94%BB%E6%9D%BF+1.png&nonce=6d3f72c8-f4f7-4ad9-bcc3-823fd80794f8&project_id=7619222010605879330&sign=5dae79049555ccd18cf6790ff76b33e7f16dd8c15328fb199be74d824d53a75f"
+              alt="9INR"
+              class="w-8 h-8 rounded-lg object-cover"
+            />
             <span class="text-white font-bold">9INR.VIP</span>
           </div>
           <p class="text-gray-400 text-sm mb-4">© 2024 9INR. सर्वाधिकार सुरक्षित।</p>
@@ -174,9 +170,11 @@ export function initApp(): void {
         modal.innerHTML = \`
           <div class="bg-gray-900 rounded-3xl p-8 max-w-md w-full border border-yellow-400/30 shadow-2xl">
             <div class="text-center">
-              <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mx-auto mb-4">
-                <span class="text-black font-black text-4xl">9</span>
-              </div>
+              <img 
+                src="https://code.coze.cn/api/sandbox/coze_coding/file/proxy?expire_time=-1&file_path=assets%2F%E7%94%BB%E6%9D%BF+1.png&nonce=6d3f72c8-f4f7-4ad9-bcc3-823fd80794f8&project_id=7619222010605879330&sign=5dae79049555ccd18cf6790ff76b33e7f16dd8c15328fb199be74d824d53a75f"
+                alt="9INR"
+                class="w-20 h-20 rounded-2xl mx-auto mb-4 object-cover"
+              />
               <h3 class="text-2xl font-bold text-white mb-2">9INR डाउनलोड करें</h3>
               <p class="text-gray-400 mb-6">आपका डाउनलोड शुरू हो रहा है...</p>
               
