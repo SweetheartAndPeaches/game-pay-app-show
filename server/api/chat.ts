@@ -44,7 +44,9 @@ export async function handleChat(req: Request, res: Response) {
 
   if (!NVIDIA_API_KEY) {
     console.error('[Chat] NVIDIA_API_KEY is not configured');
-    return res.status(500).json({ error: 'AI service not configured' });
+    return res.status(500).json({ 
+      error: 'AI service not configured. Please set NVIDIA_API_KEY environment variable.' 
+    });
   }
 
   const allMessages = [
@@ -54,6 +56,11 @@ export async function handleChat(req: Request, res: Response) {
 
   try {
     console.log('[Chat] Sending request to NVIDIA API (z-ai/glm5)...');
+    console.log('[Chat] API Key configured:', NVIDIA_API_KEY ? `${NVIDIA_API_KEY.slice(0, 10)}...` : 'NO');
+
+    // 添加超时控制器
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25000); // 25秒超时
 
     const response = await fetch(NVIDIA_API_URL, {
       method: 'POST',
@@ -68,14 +75,19 @@ export async function handleChat(req: Request, res: Response) {
         top_p: 1,
         max_tokens: 4096,
         stream: true,
-        // 不传 chat_template_kwargs 参数，模型不会输出思考过程
       }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error('[Chat] API error:', response.status, errorText);
-      throw new Error(`API error: ${response.status}`);
+      return res.status(response.status).json({ 
+        error: `NVIDIA API error: ${response.status}`,
+        details: errorText.slice(0, 500)
+      });
     }
 
     res.setHeader('Content-Type', 'text/event-stream');
@@ -121,11 +133,22 @@ export async function handleChat(req: Request, res: Response) {
     console.log('[Chat] Stream completed');
   } catch (error) {
     console.error('[Chat] Error:', error);
+    
+    // 判断错误类型
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const isTimeout = errorMessage.includes('abort') || errorMessage.includes('timeout');
+    const isNetworkError = errorMessage.includes('fetch') || errorMessage.includes('network');
+    
     if (!res.headersSent) {
-      res.status(500).json({ error: 'Failed to get response from AI' });
+      res.status(500).json({ 
+        error: isTimeout ? 'Request timeout. Please try again.' : 
+               isNetworkError ? 'Network error. Please check your connection.' : 
+               'Failed to get response from AI',
+        details: errorMessage
+      });
     } else {
       res.write(`data: ${JSON.stringify({ content: '抱歉，我遇到点问题。请稍后再试。🙏' })}\n\n`);
-      res.write('data: [DONE]\n\n');
+      res.write('data: [DONE]\n\n`);
       res.end();
     }
   }
