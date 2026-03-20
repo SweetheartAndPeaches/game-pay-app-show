@@ -162,7 +162,7 @@ export function initApp(): void {
     <!-- Background Animation Canvas -->
     <canvas id="bg-canvas" class="fixed inset-0 w-full h-full" style="z-index: 0; pointer-events: none;"></canvas>
 
-    <div class="content-wrapper min-h-screen flex flex-col" style="background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.95) 100%);">
+    <div class="content-wrapper min-h-screen flex flex-col">
       
       <!-- Header -->
       <header class="w-full py-4 px-4 sm:px-8 sticky top-0 z-50 backdrop-blur-md bg-black/50 border-b border-white/5">
