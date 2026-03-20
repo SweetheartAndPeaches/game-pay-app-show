@@ -7,19 +7,8 @@ export function initApp(): void {
   }
 
   app.innerHTML = `
-    <!-- Background Animation -->
-    <div class="bg-animation">
-      <!-- Wave Pattern -->
-      <div class="wave"></div>
-      
-      <!-- Gradient Orbs -->
-      <div class="gradient-orb orb-1"></div>
-      <div class="gradient-orb orb-2"></div>
-      <div class="gradient-orb orb-3"></div>
-      
-      <!-- Particles will be added by JavaScript -->
-      <div id="particles-container"></div>
-    </div>
+    <!-- Background Animation Canvas -->
+    <canvas id="bg-canvas" class="fixed inset-0 w-full h-full" style="z-index: 0; pointer-events: none;"></canvas>
 
     <div class="content-wrapper min-h-screen flex flex-col">
       <!-- Header -->
@@ -173,54 +162,119 @@ export function initApp(): void {
     </div>
 
     <script>
-      // Create floating particles
-      function createParticles() {
-        const container = document.getElementById('particles-container');
-        if (!container) return;
+      // ===== Triangle Particle Background Animation =====
+      
+      // Particle interface
+      class TriangleParticle {
+        x: number;
+        y: number;
+        size: number;
+        speedY: number;
+        speedX: number;
+        opacity: number;
+        rotation: number;
+        rotationSpeed: number;
         
-        const particleCount = 50;
+        constructor(canvasWidth: number, canvasHeight: number) {
+          this.x = Math.random() * canvasWidth;
+          this.y = canvasHeight + Math.random() * 100;
+          this.size = 8 + Math.random() * 16;
+          this.speedY = -(0.3 + Math.random() * 0.7);  // 向上飘动
+          this.speedX = (Math.random() - 0.5) * 0.5;    // 轻微水平漂移
+          this.opacity = 0.2 + Math.random() * 0.5;
+          this.rotation = Math.random() * Math.PI * 2;
+          this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+        }
         
+        update(canvasWidth: number, canvasHeight: number) {
+          this.y += this.speedY;
+          this.x += this.speedX;
+          this.rotation += this.rotationSpeed;
+          
+          // 边界检测：从顶部飘出后从底部重新进入
+          if (this.y < -30) {
+            this.y = canvasHeight + 30;
+            this.x = Math.random() * canvasWidth;
+          }
+        }
+      }
+      
+      // Initialize canvas and particles
+      const canvas = document.getElementById('bg-canvas') as HTMLCanvasElement;
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const particles: TriangleParticle[] = [];
+        const particleCount = 40;
+        
+        // Set canvas size
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Create particles
         for (let i = 0; i < particleCount; i++) {
-          const particle = document.createElement('div');
-          particle.className = 'particle';
-          
-          // Random position
-          particle.style.left = Math.random() * 100 + '%';
-          
-          // Random size (3px to 8px)
-          const size = 3 + Math.random() * 5;
-          particle.style.width = size + 'px';
-          particle.style.height = size + 'px';
-          
-          // Random animation duration (10s to 25s)
-          const duration = 10 + Math.random() * 15;
-          particle.style.animationDuration = duration + 's';
-          
-          // Random delay
-          particle.style.animationDelay = Math.random() * 10 + 's';
-          
-          // Random opacity
-          particle.style.opacity = (0.5 + Math.random() * 0.5).toString();
-          
-          // Random color variation (yellow to orange)
-          const hue = 40 + Math.random() * 20;
-          particle.style.background = 'hsl(' + hue + ', 100%, 55%)';
-          
-          container.appendChild(particle);
+          const p = new TriangleParticle(canvas.width, canvas.height);
+          p.y = Math.random() * canvas.height;  // 初始分布在整个画布
+          particles.push(p);
         }
+        
+        // Draw triangle shape
+        function drawTriangle(x: number, y: number, size: number, rotation: number, opacity: number) {
+          if (!ctx) return;
+          
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(rotation);
+          
+          ctx.beginPath();
+          ctx.moveTo(0, -size);                    // 顶点
+          ctx.lineTo(-size * 0.6, size * 0.6);    // 左下
+          ctx.lineTo(size * 0.6, size * 0.6);     // 右下
+          ctx.closePath();
+          
+          // 9INR 金黄色
+          ctx.fillStyle = 'rgba(255, 215, 0, ' + opacity + ')';
+          ctx.fill();
+          
+          // 添加发光效果
+          ctx.shadowColor = 'rgba(255, 215, 0, 0.5)';
+          ctx.shadowBlur = 10;
+          ctx.fill();
+          
+          ctx.restore();
+        }
+        
+        // Animation loop
+        function animate() {
+          if (!ctx) return;
+          
+          // Clear canvas with gradient background
+          const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+          gradient.addColorStop(0, '#0a0a0a');
+          gradient.addColorStop(0.5, '#1a1a1a');
+          gradient.addColorStop(1, '#0a0a0a');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+          // Update and draw particles
+          particles.forEach(p => {
+            p.update(canvas.width, canvas.height);
+            drawTriangle(p.x, p.y, p.size, p.rotation, p.opacity);
+          });
+          
+          requestAnimationFrame(animate);
+        }
+        
+        // Start animation
+        animate();
       }
       
-      // Initialize particles on load
-      createParticles();
-          
-          container.appendChild(particle);
-        }
-      }
-      
-      // Initialize particles on load
-      createParticles();
-      
-      function handleDownload(platform) {
+      // ===== Download Handler =====
+      // Mount to window for global access
+      (window as any).handleDownload = function(platform) {
         // Create download modal
         const modal = document.createElement('div');
         modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4';
