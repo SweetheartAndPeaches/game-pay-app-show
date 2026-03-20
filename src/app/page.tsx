@@ -515,6 +515,205 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Leaderboard Section */}
+        <section className="w-full py-16 px-4 bg-gradient-to-b from-transparent via-yellow-400/5 to-transparent">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 mb-4">
+                <span className="text-4xl">🏆</span>
+                <h2 className="text-2xl sm:text-3xl font-black text-white">
+                  आज के टॉप कमीशन विनर्स
+                </h2>
+              </div>
+              <div className="flex items-center justify-center gap-2 text-sm text-green-400">
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span>Live Updates - हर 5 मिनट में अपडेट</span>
+              </div>
+            </div>
+            
+            {/* Leaderboard Table */}
+            <div className="bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+              {/* Header */}
+              <div className="grid grid-cols-12 gap-4 px-4 sm:px-6 py-3 bg-white/5 border-b border-white/10 text-gray-400 text-sm">
+                <div className="col-span-1 text-center">रैंक</div>
+                <div className="col-span-5">यूज़र</div>
+                <div className="col-span-3 text-right hidden sm:block">शहर</div>
+                <div className="col-span-6 sm:col-span-3 text-right">आज की कमाई</div>
+              </div>
+              
+              {/* Rank 1 */}
+              <div className="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 items-center border-b border-white/5 hover:bg-yellow-400/5 transition-colors">
+                <div className="col-span-1 text-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mx-auto shadow-lg shadow-yellow-400/30">
+                    <span className="text-black font-black text-sm">1</span>
+                  </div>
+                </div>
+                <div className="col-span-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center text-white font-bold text-sm">NG</div>
+                  <span className="text-white font-medium">Neha G.</span>
+                </div>
+                <div className="col-span-3 text-right text-gray-400 text-sm hidden sm:block">Pune</div>
+                <div className="col-span-6 sm:col-span-3 text-right">
+                  <span className="text-yellow-400 font-bold text-lg">₹6,836</span>
+                </div>
+              </div>
+              
+              {/* Rank 2 */}
+              <div className="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 items-center border-b border-white/5 hover:bg-gray-400/5 transition-colors">
+                <div className="col-span-1 text-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center mx-auto shadow-lg">
+                    <span className="text-black font-black text-sm">2</span>
+                  </div>
+                </div>
+                <div className="col-span-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-sm">AV</div>
+                  <span className="text-white font-medium">Amit V.</span>
+                </div>
+                <div className="col-span-3 text-right text-gray-400 text-sm hidden sm:block">Bangalore</div>
+                <div className="col-span-6 sm:col-span-3 text-right">
+                  <span className="text-gray-300 font-bold text-lg">₹6,729</span>
+                </div>
+              </div>
+              
+              {/* Rank 3 */}
+              <div className="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 items-center border-b border-white/5 hover:bg-orange-400/5 transition-colors">
+                <div className="col-span-1 text-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mx-auto shadow-lg shadow-orange-400/30">
+                    <span className="text-black font-black text-sm">3</span>
+                  </div>
+                </div>
+                <div className="col-span-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm">RK</div>
+                  <span className="text-white font-medium">Rahul K.</span>
+                </div>
+                <div className="col-span-3 text-right text-gray-400 text-sm hidden sm:block">Mumbai</div>
+                <div className="col-span-6 sm:col-span-3 text-right">
+                  <span className="text-orange-400 font-bold text-lg">₹4,425</span>
+                </div>
+              </div>
+              
+              {/* Rank 4 */}
+              <div className="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors">
+                <div className="col-span-1 text-center">
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mx-auto">
+                    <span className="text-gray-400 font-bold text-sm">4</span>
+                  </div>
+                </div>
+                <div className="col-span-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white font-bold text-sm">VM</div>
+                  <span className="text-white font-medium">Vikram M.</span>
+                </div>
+                <div className="col-span-3 text-right text-gray-400 text-sm hidden sm:block">Chennai</div>
+                <div className="col-span-6 sm:col-span-3 text-right">
+                  <span className="text-white font-bold">₹4,072</span>
+                </div>
+              </div>
+              
+              {/* Rank 5 */}
+              <div className="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors">
+                <div className="col-span-1 text-center">
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mx-auto">
+                    <span className="text-gray-400 font-bold text-sm">5</span>
+                  </div>
+                </div>
+                <div className="col-span-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-600 flex items-center justify-center text-white font-bold text-sm">PS</div>
+                  <span className="text-white font-medium">Priya S.</span>
+                </div>
+                <div className="col-span-3 text-right text-gray-400 text-sm hidden sm:block">Delhi</div>
+                <div className="col-span-6 sm:col-span-3 text-right">
+                  <span className="text-white font-bold">₹3,951</span>
+                </div>
+              </div>
+              
+              {/* Rank 6 */}
+              <div className="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors">
+                <div className="col-span-1 text-center">
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mx-auto">
+                    <span className="text-gray-400 font-bold text-sm">6</span>
+                  </div>
+                </div>
+                <div className="col-span-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm">DK</div>
+                  <span className="text-white font-medium">Deepa K.</span>
+                </div>
+                <div className="col-span-3 text-right text-gray-400 text-sm hidden sm:block">Jaipur</div>
+                <div className="col-span-6 sm:col-span-3 text-right">
+                  <span className="text-white font-bold">₹3,883</span>
+                </div>
+              </div>
+              
+              {/* Rank 7 */}
+              <div className="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors">
+                <div className="col-span-1 text-center">
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mx-auto">
+                    <span className="text-gray-400 font-bold text-sm">7</span>
+                  </div>
+                </div>
+                <div className="col-span-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center text-white font-bold text-sm">AR</div>
+                  <span className="text-white font-medium">Anjali R.</span>
+                </div>
+                <div className="col-span-3 text-right text-gray-400 text-sm hidden sm:block">Hyderabad</div>
+                <div className="col-span-6 sm:col-span-3 text-right">
+                  <span className="text-white font-bold">₹3,165</span>
+                </div>
+              </div>
+              
+              {/* Rank 8 */}
+              <div className="grid grid-cols-12 gap-4 px-4 sm:px-6 py-4 items-center hover:bg-white/5 transition-colors">
+                <div className="col-span-1 text-center">
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mx-auto">
+                    <span className="text-gray-400 font-bold text-sm">8</span>
+                  </div>
+                </div>
+                <div className="col-span-5 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center text-white font-bold text-sm">SP</div>
+                  <span className="text-white font-medium">Suresh P.</span>
+                </div>
+                <div className="col-span-3 text-right text-gray-400 text-sm hidden sm:block">Kolkata</div>
+                <div className="col-span-6 sm:col-span-3 text-right">
+                  <span className="text-white font-bold">₹3,165</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* CTA below leaderboard */}
+            <div className="text-center mt-6">
+              <p className="text-gray-400 text-sm mb-4">अपना नाम इस लिस्ट में देखना चाहते हैं?</p>
+              <button 
+                onClick={handleDownload}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
+              >
+                <span>अभी शुरू करें</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="w-full py-16 px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-r from-yellow-400/20 via-yellow-500/10 to-yellow-400/20 rounded-3xl p-8 sm:p-12 border border-yellow-400/30 text-center">
+              <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+                अपनी पासिव इनकम यात्रा शुरू करें
+              </h2>
+              <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
+                आज ही 9INR डाउनलोड करें और तीन स्तरीय कमीशन प्रणाली से पासिव इनकम कमाना शुरू करें। अपने दोस्तों को आमंत्रित करें और उनकी कमाई से भी कमीशन पाएं!
+              </p>
+              <button 
+                onClick={handleDownload}
+                className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-4 px-10 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg shadow-yellow-400/20 text-lg"
+              >
+                अभी डाउनलोड करें 🚀
+              </button>
+            </div>
+          </div>
+        </section>
+
         {/* Footer */}
         <footer className="w-full py-8 px-4 border-t border-white/5">
           <div className="max-w-7xl mx-auto text-center">
