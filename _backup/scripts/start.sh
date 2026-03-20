@@ -9,9 +9,9 @@ DEPLOY_RUN_PORT="${DEPLOY_RUN_PORT:-$PORT}"
 
 start_service() {
     cd "${COZE_WORKSPACE_PATH}"
-    echo "Starting HTTP service on port ${DEPLOY_RUN_PORT} for deploy..."
-    PORT=${DEPLOY_RUN_PORT} node dist/server.js
+    echo "Starting express production server on port ${DEPLOY_RUN_PORT}..."
+    PORT=$DEPLOY_RUN_PORT node dist-server/server.js
 }
 
-echo "Starting HTTP service on port ${DEPLOY_RUN_PORT} for deploy..."
+echo "Starting express production server on port ${DEPLOY_RUN_PORT}..."
 start_service

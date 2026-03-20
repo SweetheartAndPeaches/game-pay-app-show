@@ -1,12 +1,6 @@
 # projects
 
-这是一个基于 Express + Vite + TypeScript + Tailwind CSS 的全栈 Web 应用项目，由扣子编程 CLI 创建。
-
-**核心特性：**
-- 🚀 前端：Vite + TypeScript + Tailwind CSS
-- 🔧 后端：Express + TypeScript，提供 RESTful API
-- 🔥 开发模式：Vite HMR + Express API，单进程启动
-- 📦 生产模式：Express 静态服务 + API，高性能部署
+这是一个基于 [Next.js 16](https://nextjs.org) + [shadcn/ui](https://ui.shadcn.com) 的全栈应用项目，由扣子编程 CLI 创建。
 
 ## 快速开始
 
@@ -18,7 +12,7 @@ coze dev
 
 启动后，在浏览器中打开 [http://localhost:5000](http://localhost:5000) 查看应用。
 
-开发服务器支持热更新（HMR），修改代码后页面会自动刷新。
+开发服务器支持热更新，修改代码后页面会自动刷新。
 
 ### 构建生产版本
 
@@ -26,205 +20,145 @@ coze dev
 coze build
 ```
 
-构建产物位于 `dist/` 目录，可直接部署到静态托管服务。
-
-### 预览生产版本
+### 启动生产服务器
 
 ```bash
 coze start
 ```
 
-在本地启动一个静态服务器，预览生产构建的效果。
-
 ## 项目结构
 
 ```
-├── server/                # 后端服务器目录
-│   ├── index.ts          # express 服务器入口
-│   ├── routes/           # API 路由目录
-│   │   └── index.ts      # 路由定义
-│   └── vite.ts           # Vite 集成逻辑
-├── src/                   # 前端源码目录
-│   ├── index.ts          # 前端应用入口（初始化）
-│   ├── main.ts           # 前端主逻辑文件
-│   └── index.css         # 全局样式（包含 Tailwind 指令）
-├── index.html            # HTML 入口文件
-├── vite.config.ts        # Vite 配置
-├── tailwind.config.ts    # Tailwind CSS 配置
-└── tsconfig.json         # TypeScript 配置
+src/
+├── app/                      # Next.js App Router 目录
+│   ├── layout.tsx           # 根布局组件
+│   ├── page.tsx             # 首页
+│   ├── globals.css          # 全局样式（包含 shadcn 主题变量）
+│   └── [route]/             # 其他路由页面
+├── components/              # React 组件目录
+│   └── ui/                  # shadcn/ui 基础组件（优先使用）
+│       ├── button.tsx
+│       ├── card.tsx
+│       └── ...
+├── lib/                     # 工具函数库
+│   └── utils.ts            # cn() 等工具函数
+└── hooks/                   # 自定义 React Hooks（可选）
+
+server/
+├── index.ts                 # 自定义服务器入口
+├── tsconfig.json           # Server TypeScript 配置
+└── dist/                    # 编译输出目录（自动生成）
 ```
-
-**目录说明：**
-
-- **`server/`** - 后端服务器代码
-  - `server.ts` - 服务器主入口，负责创建和启动 Express 应用
-  - `routes/` - API 路由模块，支持按功能拆分路由
-  - `vite.ts` - Vite 开发服务器和静态文件服务集成
-
-- **`src/`** - 前端应用代码
-  - 所有前端相关代码都在这里
-
-**工作原理：**
-
-- **开发模式** (`coze dev`)：
-  - 运行 `server/server.ts` 启动 Express 服务器
-  - Vite 以 middleware 模式集成到 Express
-  - 前端支持 HMR（热模块替换）
-  - 后端 API 和前端在同一进程，端口 5000
-
-- **生产模式** (`coze start`)：
-  - `coze build` 构建前端 → `dist/` 目录
-  - `coze build` 构建后端 → `dist-server/index.js` (CommonJS 格式)
-  - 运行 `dist-server/index.js` 启动生产服务器
-  - Express 服务静态文件 + API 路由
-  - 单一 Node.js 进程，轻量高效
 
 ## 核心开发规范
 
-### 1. 后端 API 开发
+### 1. 组件开发
 
-**添加新的 API 路由**
+**优先使用 shadcn/ui 基础组件**
 
-在 `server/routes/index.ts` 中添加路由：
+本项目已预装完整的 shadcn/ui 组件库，位于 `src/components/ui/` 目录。开发时应优先使用这些组件作为基础：
 
-```typescript
-// GET 请求示例
-router.get('/api/users', (req, res) => {
-  res.json({
-    users: [
-      { id: 1, name: 'Alice' },
-      { id: 2, name: 'Bob' },
-    ],
-  });
-});
+```tsx
+// ✅ 推荐：使用 shadcn 基础组件
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 
-// POST 请求示例
-router.post('/api/users', (req, res) => {
-  const userData = req.body;
-  // 处理业务逻辑
-  res.json({
-    success: true,
-    user: userData,
-  });
-});
-
-// 动态路由参数
-router.get('/api/users/:id', (req, res) => {
-  const userId = req.params.id;
-  res.json({
-    id: userId,
-    name: 'User ' + userId,
-  });
-});
-```
-
-**拆分路由模块**（推荐）
-
-当路由变多时，可以按功能拆分：
-
-```typescript
-// server/routes/users.ts
-import { Router } from 'express';
-
-const router = Router();
-
-router.get('/api/users', (req, res) => {
-  // 用户列表逻辑
-  res.json({ users: [] });
-});
-
-router.post('/api/users', (req, res) => {
-  // 创建用户逻辑
-  res.json({ success: true });
-});
-
-export default router;
-```
-
-然后在 `server/server.ts` 中注册：
-
-```typescript
-import usersRouter from './routes/users';
-
-// 注册路由
-app.use(usersRouter);
-```
-
-**前端调用 API**
-
-```typescript
-// GET 请求
-async function getUsers() {
-  const response = await fetch('/api/users');
-  const data = await response.json();
-  console.log(data);
-}
-
-// POST 请求
-async function createUser(name: string) {
-  const response = await fetch('/api/users', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name }),
-  });
-  const data = await response.json();
-  console.log(data);
+export default function MyComponent() {
+  return (
+    <Card>
+      <CardHeader>标题</CardHeader>
+      <CardContent>
+        <Input placeholder="输入内容" />
+        <Button>提交</Button>
+      </CardContent>
+    </Card>
+  );
 }
 ```
 
-**API 最佳实践**
+**可用的 shadcn 组件清单**
 
-- ✅ 所有 API 路由以 `/api` 开头，避免与前端路由冲突
-- ✅ 使用 RESTful 设计：GET 查询、POST 创建、PUT 更新、DELETE 删除
-- ✅ 返回统一的响应格式：`{ success: boolean, data?: any, error?: string }`
-- ✅ 添加错误处理和参数验证
+- 表单：`button`, `input`, `textarea`, `select`, `checkbox`, `radio-group`, `switch`, `slider`
+- 布局：`card`, `separator`, `tabs`, `accordion`, `collapsible`, `scroll-area`
+- 反馈：`alert`, `alert-dialog`, `dialog`, `toast`, `sonner`, `progress`
+- 导航：`dropdown-menu`, `menubar`, `navigation-menu`, `context-menu`
+- 数据展示：`table`, `avatar`, `badge`, `hover-card`, `tooltip`, `popover`
+- 其他：`calendar`, `command`, `carousel`, `resizable`, `sidebar`
 
-### 2. 样式开发
+详见 `src/components/ui/` 目录下的具体组件实现。
 
-**使用 Tailwind CSS**
+### 2. 路由开发
 
-本项目使用 Tailwind CSS 进行样式开发，支持亮色/暗色模式自动切换。
+Next.js 使用文件系统路由，在 `src/app/` 目录下创建文件夹即可添加路由：
 
-```typescript
-// 使用 Tailwind 工具类
-app.innerHTML = `
-  <div class="flex items-center justify-center min-h-screen bg-white dark:bg-black">
-    <h1 class="text-4xl font-bold text-black dark:text-white">
-      Hello World
-    </h1>
-  </div>
-`;
+```bash
+# 创建新路由 /about
+src/app/about/page.tsx
+
+# 创建动态路由 /posts/[id]
+src/app/posts/[id]/page.tsx
+
+# 创建路由组（不影响 URL）
+src/app/(marketing)/about/page.tsx
+
+# 创建 API 路由
+src/app/api/users/route.ts
 ```
 
-**主题变量**
+**页面组件示例**
 
-主题变量定义在 `src/index.css` 中，支持自动适配系统主题：
+```tsx
+// src/app/about/page.tsx
+import { Button } from '@/components/ui/button';
 
-```css
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+export const metadata = {
+  title: '关于我们',
+  description: '关于页面描述',
+};
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+export default function AboutPage() {
+  return (
+    <div>
+      <h1>关于我们</h1>
+      <Button>了解更多</Button>
+    </div>
+  );
 }
 ```
 
-**常用 Tailwind 类名**
+**动态路由示例**
 
-- 布局：`flex`, `grid`, `container`, `mx-auto`
-- 间距：`p-4`, `m-4`, `gap-4`, `space-x-4`
-- 颜色：`bg-white`, `text-black`, `dark:bg-black`, `dark:text-white`
-- 排版：`text-lg`, `font-bold`, `leading-8`, `tracking-tight`
-- 响应式：`sm:`, `md:`, `lg:`, `xl:`
+```tsx
+// src/app/posts/[id]/page.tsx
+export default async function PostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
 
-### 2. 依赖管理
+  return <div>文章 ID: {id}</div>;
+}
+```
+
+**API 路由示例**
+
+```tsx
+// src/app/api/users/route.ts
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  return NextResponse.json({ users: [] });
+}
+
+export async function POST(request: Request) {
+  const body = await request.json();
+  return NextResponse.json({ success: true });
+}
+```
+
+### 3. 依赖管理
 
 **必须使用 pnpm 管理依赖**
 
@@ -245,47 +179,123 @@ pnpm add -D package-name
 
 项目已配置 `preinstall` 脚本，使用其他包管理器会报错。
 
-### 3. TypeScript 开发
+### 4. 样式开发
 
-**类型安全**
+**使用 Tailwind CSS v4**
 
-充分利用 TypeScript 的类型系统，确保代码质量：
+本项目使用 Tailwind CSS v4 进行样式开发，并已配置 shadcn 主题变量。
 
-```typescript
-// 定义接口
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+```tsx
+// 使用 Tailwind 类名
+<div className="flex items-center gap-4 p-4 rounded-lg bg-background">
+  <Button className="bg-primary text-primary-foreground">
+    主要按钮
+  </Button>
+</div>
 
-// 使用类型
-function createUser(data: User): void {
-  console.log(`Creating user: ${data.name}`);
-}
+// 使用 cn() 工具函数合并类名
+import { cn } from '@/lib/utils';
 
-// DOM 操作类型推断
-const button = document.querySelector<HTMLButtonElement>('#my-button');
-if (button) {
-  button.addEventListener('click', () => {
-    console.log('Button clicked');
+<div className={cn(
+  "base-class",
+  condition && "conditional-class",
+  className
+)}>
+  内容
+</div>
+```
+
+**主题变量**
+
+主题变量定义在 `src/app/globals.css` 中，支持亮色/暗色模式：
+
+- `--background`, `--foreground`
+- `--primary`, `--primary-foreground`
+- `--secondary`, `--secondary-foreground`
+- `--muted`, `--muted-foreground`
+- `--accent`, `--accent-foreground`
+- `--destructive`, `--destructive-foreground`
+- `--border`, `--input`, `--ring`
+
+### 5. 表单开发
+
+推荐使用 `react-hook-form` + `zod` 进行表单开发：
+
+```tsx
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+const formSchema = z.object({
+  username: z.string().min(2, '用户名至少 2 个字符'),
+  email: z.string().email('请输入有效的邮箱'),
+});
+
+export default function MyForm() {
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: { username: '', email: '' },
   });
+
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    console.log(data);
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <Input {...form.register('username')} />
+      <Input {...form.register('email')} />
+      <Button type="submit">提交</Button>
+    </form>
+  );
 }
 ```
 
-**避免 any 类型**
+### 6. 数据获取
 
-尽量避免使用 `any`，使用 `unknown` 或具体类型：
+**服务端组件（推荐）**
 
-```typescript
-// ❌ 不推荐
-function process(data: any) { }
+```tsx
+// src/app/posts/page.tsx
+async function getPosts() {
+  const res = await fetch('https://api.example.com/posts', {
+    cache: 'no-store', // 或 'force-cache'
+  });
+  return res.json();
+}
 
-// ✅ 推荐
-function process(data: unknown) {
-  if (typeof data === 'string') {
-    console.log(data.toUpperCase());
-  }
+export default async function PostsPage() {
+  const posts = await getPosts();
+
+  return (
+    <div>
+      {posts.map(post => (
+        <div key={post.id}>{post.title}</div>
+      ))}
+    </div>
+  );
+}
+```
+
+**客户端组件**
+
+```tsx
+'use client';
+
+import { useEffect, useState } from 'react';
+
+export default function ClientComponent() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/data')
+      .then(res => res.json())
+      .then(setData);
+  }, []);
+
+  return <div>{JSON.stringify(data)}</div>;
 }
 ```
 
@@ -293,126 +303,61 @@ function process(data: unknown) {
 
 ### 添加新页面
 
-本项目是单页应用（SPA），如需多页面：
+1. 在 `src/app/` 下创建文件夹和 `page.tsx`
+2. 使用 shadcn 组件构建 UI
+3. 根据需要添加 `layout.tsx` 和 `loading.tsx`
 
-1. 在 `src/` 下创建新的 `.ts` 文件
-2. 在 `vite.config.ts` 中配置多入口
-3. 创建对应的 `.html` 文件
+### 创建业务组件
 
-### DOM 操作
+1. 在 `src/components/` 下创建组件文件（非 UI 组件）
+2. 优先组合使用 `src/components/ui/` 中的基础组件
+3. 使用 TypeScript 定义 Props 类型
 
-```typescript
-// 获取元素
-const app = document.getElementById('app');
-const button = document.querySelector<HTMLButtonElement>('.my-button');
+### 添加全局状态
 
-// 动态创建元素
-const div = document.createElement('div');
-div.className = 'flex items-center gap-4';
-div.textContent = 'Hello World';
-app?.appendChild(div);
+推荐使用 React Context 或 Zustand：
 
-// 事件监听
-button?.addEventListener('click', (e) => {
-  console.log('Clicked', e);
-});
-```
+```tsx
+// src/lib/store.ts
+import { create } from 'zustand';
 
-### 数据获取
-
-```typescript
-// Fetch API
-async function fetchData() {
-  try {
-    const response = await fetch('https://api.example.com/data');
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
-  }
+interface Store {
+  count: number;
+  increment: () => void;
 }
 
-// 使用数据
-fetchData().then(data => {
-  console.log(data);
-});
+export const useStore = create<Store>((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+}));
 ```
 
-### 环境变量
+### 集成数据库
 
-在 `.env` 文件中定义环境变量（需以 `VITE_` 开头）：
-
-```bash
-VITE_API_URL=https://api.example.com
-```
-
-在代码中使用：
-
-```typescript
-const apiUrl = import.meta.env.VITE_API_URL;
-console.log(apiUrl); // https://api.example.com
-```
+推荐使用 Prisma 或 Drizzle ORM，在 `src/lib/db.ts` 中配置。
 
 ## 技术栈
 
-**前端：**
-- **构建工具**: Vite 7.x
-- **语言**: TypeScript 5.x
-- **样式**: Tailwind CSS 3.x
-
-**后端：**
-- **框架**: Express 4.x
-- **内置中间件**: express.json(), express.urlencoded(), express.static()
-
-**工具：**
+- **框架**: Next.js 16.1.1 (App Router)
+- **UI 组件**: shadcn/ui (基于 Radix UI)
+- **样式**: Tailwind CSS v4
+- **表单**: React Hook Form + Zod
+- **图标**: Lucide React
+- **字体**: Geist Sans & Geist Mono
 - **包管理器**: pnpm 9+
-- **运行时**: Node.js 18+
-- **开发工具**: tsx (TypeScript 执行器)
+- **TypeScript**: 5.x
 
 ## 参考文档
 
-**前端：**
-- [Vite 官方文档](https://cn.vitejs.dev/)
-- [TypeScript 官方文档](https://www.typescriptlang.org/zh/docs/)
+- [Next.js 官方文档](https://nextjs.org/docs)
+- [shadcn/ui 组件文档](https://ui.shadcn.com)
 - [Tailwind CSS 文档](https://tailwindcss.com/docs)
-
-**后端：**
-- [Express 官方文档](https://expressjs.com/)
-- [Express 中文文档](https://expressjs.com/zh-cn/)
+- [React Hook Form](https://react-hook-form.com)
 
 ## 重要提示
 
 1. **必须使用 pnpm** 作为包管理器
-2. **使用 TypeScript** 进行类型安全开发，避免使用 `any`
-3. **使用 Tailwind CSS** 进行样式开发，支持响应式和暗色模式
-4. **环境变量必须以 `VITE_` 开头** 才能在客户端代码中访问
-5. **开发时使用 `coze dev`**，支持热更新和快速刷新
-6. **API 路由以 `/api` 开头**，避免与前端路由冲突
-7. **单进程架构**：开发和生产环境都是前后端在同一进程中运行
-
-## 常见问题
-
-**Q: 如何分离前后端端口？**
-
-如果需要前后端分离部署，可以：
-- 前端：使用 `npx vite` 单独启动（默认端口 5173）
-- 后端：修改 `server.ts`，移除 Vite middleware，单独启动
-
-**Q: 如何添加数据库？**
-
-```bash
-# 安装数据库客户端（以 PostgreSQL 为例）
-pnpm add pg
-pnpm add -D @types/pg
-
-# 在 server.ts 中使用
-import { Pool } from 'pg';
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-```
-
-**Q: 如何部署？**
-
-1. 运行 `coze build` 构建前后端
-2. 将整个项目上传到服务器
-3. 运行 `pnpm install --prod`
-4. 运行 `coze start` 启动服务
+2. **优先使用 shadcn/ui 组件** 而不是从零开发基础组件
+3. **遵循 Next.js App Router 规范**，正确区分服务端/客户端组件
+4. **使用 TypeScript** 进行类型安全开发
+5. **使用 `@/` 路径别名** 导入模块（已配置）
