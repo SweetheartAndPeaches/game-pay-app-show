@@ -373,34 +373,6 @@ async function sendMessage(): Promise<void> {
   }
   
   isTyping = false;
-} '[DONE]') continue;
-          
-          try {
-            const parsed = JSON.parse(data);
-            const content = parsed.content;
-            if (content) {
-              fullResponse += content;
-              contentP.textContent = fullResponse;
-              // Scroll to bottom
-              messagesContainer?.scrollTo(0, messagesContainer.scrollHeight);
-            }
-          } catch (e) {
-            // Skip invalid JSON
-          }
-        }
-      }
-    }
-    
-    // Save to history
-    chatMessages.push({ role: 'user', content: message });
-    chatMessages.push({ role: 'assistant', content: fullResponse });
-    
-  } catch (error) {
-    hideTypingIndicator();
-    addMessage('assistant', 'Sorry, मुझे थोड़ी समस्या हो रही है। कृपया बाद में पुनः प्रयास करें। 🙏');
-  }
-  
-  isTyping = false;
 }
 
 function addMessage(role: 'user' | 'assistant', content: string): void {
