@@ -3,28 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --background: #0a0a0a;
+  --background: #0f0f0f;
   --foreground: #ededed;
-  --primary: #FFD700;
-  --primary-dark: #FFC000;
+  --saffron: #FF9933;
+  --green: #138808;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Noto Sans Devanagari', Arial, Helvetica, sans-serif;
+  font-family: 'Inter', 'Noto Sans Devanagari', Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
 }
 
-/* Content wrapper to appear above background */
-.content-wrapper {
-  position: relative;
-  z-index: 1;
+/* Glass Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* App Icon Float Animation */
+/* Float Animation */
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);
@@ -34,12 +35,131 @@ body {
   }
 }
 
-/* Download Button Glow Animation */
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+/* Money Rain Animation */
+@keyframes float-up {
+  0% { 
+    transform: translateY(0px) rotate(0deg); 
+    opacity: 1; 
   }
-  50% {
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+  100% { 
+    transform: translateY(-100vh) rotate(360deg); 
+    opacity: 0; 
   }
+}
+
+.money-particle {
+  position: fixed;
+  font-size: 24px;
+  animation: float-up 6s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Pulse for CTA */
+@keyframes pulse-saffron {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(255, 153, 51, 0.7); 
+  }
+  50% { 
+    box-shadow: 0 0 0 20px rgba(255, 153, 51, 0); 
+  }
+}
+
+.pulse-btn {
+  animation: pulse-saffron 2s infinite;
+}
+
+/* Range Slider */
+input[type=range] {
+  -webkit-appearance: none;
+  background: transparent;
+  width: 100%;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: #FF9933;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,153,51,0.8);
+  margin-top: -10px;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+}
+
+input[type=range]::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: #FF9933;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,153,51,0.8);
+  border: none;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+}
+
+/* Scroll Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Level Colors */
+.level-1 { 
+  background: linear-gradient(135deg, #FFD700, #FFA500); 
+}
+
+.level-2 { 
+  background: linear-gradient(135deg, #C0C0C0, #E8E8E8); 
+}
+
+.level-3 { 
+  background: linear-gradient(135deg, #CD7F32, #B87333); 
+}
+
+/* India Gradient Text */
+.india-gradient {
+  background: linear-gradient(135deg, #FF9933 0%, #ffffff 50%, #138808 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255,153,51,0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,153,51,0.8);
 }
