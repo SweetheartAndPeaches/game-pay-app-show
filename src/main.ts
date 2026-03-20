@@ -149,6 +149,72 @@ function handleDownload(platform: string): void {
   }, 200);
 }
 
+// ===== Commission Notification System =====
+const indianNames = [
+  'Priya', 'Amit', 'Neha', 'Rahul', 'Deepa', 'Vikram', 'Anjali', 'Suresh',
+  'Kavita', 'Rajesh', 'Pooja', 'Sanjay', 'Meera', 'Arjun', 'Shreya', 'Vijay',
+  'Nisha', 'Rohan', 'Divya', 'Karan', 'Anita', 'Manish', 'Ritu', 'Ashok'
+];
+
+const indianCities = [
+  'Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad', 'Pune', 'Jaipur',
+  'Ahmedabad', 'Lucknow', 'Chandigarh', 'Noida', 'Gurgaon', 'Indore', 'Bhopal', 'Nagpur'
+];
+
+let notificationInterval: number | null = null;
+
+function showCommissionNotification(): void {
+  // 随机生成数据
+  const name = indianNames[Math.floor(Math.random() * indianNames.length)];
+  const city = indianCities[Math.floor(Math.random() * indianCities.length)];
+  const amount = Math.floor(Math.random() * 500 + 100); // ₹100 - ₹600
+  
+  // 创建通知元素
+  const notification = document.createElement('div');
+  notification.className = 'commission-notification';
+  notification.innerHTML = `
+    <div class="notification-content">
+      <div class="notification-avatar">
+        <span class="avatar-text">${name.charAt(0)}${name.split(' ')[1]?.charAt(0) || ''}</span>
+      </div>
+      <div class="notification-info">
+        <div class="notification-title">
+          <span class="notification-name">${name}</span>
+          <span class="notification-city">📍 ${city}</span>
+        </div>
+        <div class="notification-amount">कमीशन मिला: <span class="amount-value">₹${amount}</span></div>
+      </div>
+      <div class="notification-time">अभी</div>
+    </div>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // 触发动画 - 从右往左滑入
+  requestAnimationFrame(() => {
+    notification.classList.add('show');
+  });
+  
+  // 3秒后消失
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      notification.remove();
+    }, 500); // 等待动画完成
+  }, 3000);
+}
+
+function startNotificationSystem(): void {
+  // 初始延迟5秒后开始
+  setTimeout(() => {
+    showCommissionNotification();
+    // 每30秒推送一次
+    notificationInterval = window.setInterval(() => {
+      showCommissionNotification();
+    }, 30000);
+  }, 5000);
+}
+
 // ===== Main App Initialization =====
 export function initApp(): void {
   const app = document.getElementById('app');
@@ -833,4 +899,7 @@ export function initApp(): void {
     (document.getElementById('monthly-income') as HTMLElement).textContent = '₹' + Math.round(monthlyIncome).toLocaleString();
     (document.getElementById('yearly-income') as HTMLElement).textContent = '₹' + Math.round(yearlyIncome).toLocaleString();
   });
+
+  // Start commission notification system
+  startNotificationSystem();
 }

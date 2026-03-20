@@ -66,3 +66,113 @@ html, body {
     box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
   }
 }
+
+/* Commission Notification Styles */
+.commission-notification {
+  position: fixed;
+  bottom: 20px;
+  right: -400px;
+  z-index: 9999;
+  transition: right 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.commission-notification.show {
+  right: 20px;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, rgba(30, 30, 30, 0.95) 0%, rgba(20, 20, 20, 0.98) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  padding: 12px 16px;
+  min-width: 280px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.notification-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar-text {
+  color: #000;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.notification-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.notification-name {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.notification-city {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+}
+
+.notification-amount {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+}
+
+.amount-value {
+  color: #4ADE80;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.notification-time {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .commission-notification {
+    bottom: 10px;
+    right: -320px;
+  }
+  
+  .commission-notification.show {
+    right: 10px;
+  }
+  
+  .notification-content {
+    min-width: 240px;
+    padding: 10px 12px;
+  }
+  
+  .notification-avatar {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .avatar-text {
+    font-size: 12px;
+  }
+}
