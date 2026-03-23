@@ -44,12 +44,12 @@ export default function Home() {
     
     if (now - lastDownloadTime < DOWNLOAD_COOLDOWN) {
       const remainingSeconds = Math.ceil((DOWNLOAD_COOLDOWN - (now - lastDownloadTime)) / 1000);
-      return { allowed: false, message: `请等待 ${remainingSeconds} 秒后再试` };
+      return { allowed: false, message: `कृपया ${remainingSeconds} सेकंड प्रतीक्षा करें` };
     }
     
     if (downloadCount >= DOWNLOAD_LIMIT) {
       const resetMinutes = Math.ceil((downloadCountResetTime - now) / 60000);
-      return { allowed: false, message: `每小时最多下载 ${DOWNLOAD_LIMIT} 次，请 ${resetMinutes} 分钟后再试` };
+      return { allowed: false, message: `प्रति घंटे अधिकतम ${DOWNLOAD_LIMIT} बार डाउनलोड कर सकते हैं, ${resetMinutes} मिनट बाद पुनः प्रयास करें` };
     }
     
     return { allowed: true, message: '' };
@@ -739,10 +739,10 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">下载受限</h3>
+              <h3 className="text-xl font-bold text-white mb-2">डाउनलोड सीमित</h3>
               <p className="text-gray-400 mb-6">{limitMessage}</p>
               <button className="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-xl transition-colors" onClick={() => setShowLimitModal(false)}>
-                关闭
+                बंद करें
               </button>
             </div>
           </div>
