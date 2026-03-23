@@ -4,17 +4,22 @@ import { useState } from 'react';
 import TriangleBackground from '@/components/TriangleBackground';
 import ChatWidget from '@/components/ChatWidget';
 import CommissionNotification from '@/components/CommissionNotification';
+import VideoModal from '@/components/VideoModal';
 import { useSecurity } from '@/hooks/useSecurity';
 
 // Download frequency limit
 const DOWNLOAD_LIMIT = 3;
 const DOWNLOAD_COOLDOWN = 10 * 1000;
 
+// Promo video URL (pre-generated)
+const PROMO_VIDEO_URL = 'https://coze-coding-project.tos.coze.site/coze_storage_7619221925059067956/video/video_generate_cgt-20260324001249-8shpq.mp4';
+
 export default function Home() {
   useSecurity();
   
   const [showLimitModal, setShowLimitModal] = useState(false);
   const [limitMessage, setLimitMessage] = useState('');
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   // Calculator state
   const [level1Count, setLevel1Count] = useState(10);
@@ -146,8 +151,11 @@ export default function Home() {
                     <span>ऐप डाउनलोड करें और कमाई शुरू करें</span>
                   </button>
                   
-                  <button className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-                    <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-yellow-400/50 transition-colors">
+                  <button 
+                    onClick={() => setShowVideoModal(true)}
+                    className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >
+                    <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-yellow-400/50 hover:bg-yellow-400/10 transition-all">
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z"/>
                       </svg>
@@ -740,6 +748,13 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Video Modal */}
+      <VideoModal 
+        isOpen={showVideoModal}
+        onClose={() => setShowVideoModal(false)}
+        videoUrl={PROMO_VIDEO_URL}
+      />
     </main>
   );
 }
