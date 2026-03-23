@@ -12,7 +12,7 @@ const DOWNLOAD_LIMIT = 3;
 const DOWNLOAD_COOLDOWN = 10 * 1000;
 
 // Promo video URL (pre-generated)
-const PROMO_VIDEO_URL = 'https://coze-coding-project.tos.coze.site/coze_storage_7619221925059067956/video/video_generate_cgt-20260324001249-8shpq.mp4';
+const PROMO_VIDEO_URL = 'https://d1lpd5tr8ui3gv.cloudfront.net/web/9inr/video_generate_9inr.mp4';
 
 export default function Home() {
   useSecurity();
