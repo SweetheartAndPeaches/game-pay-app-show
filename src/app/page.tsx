@@ -4,22 +4,17 @@ import { useState } from 'react';
 import TriangleBackground from '@/components/TriangleBackground';
 import ChatWidget from '@/components/ChatWidget';
 import CommissionNotification from '@/components/CommissionNotification';
-import VideoModal from '@/components/VideoModal';
 import { useSecurity } from '@/hooks/useSecurity';
 
 // Download frequency limit
 const DOWNLOAD_LIMIT = 3;
 const DOWNLOAD_COOLDOWN = 10 * 1000;
 
-// Promo video URL (pre-generated)
-const PROMO_VIDEO_URL = 'https://d1lpd5tr8ui3gv.cloudfront.net/web/9inr/video_generate_9inr.mp4';
-
 export default function Home() {
   useSecurity();
   
   const [showLimitModal, setShowLimitModal] = useState(false);
   const [limitMessage, setLimitMessage] = useState('');
-  const [showVideoModal, setShowVideoModal] = useState(false);
 
   // Calculator state
   const [level1Count, setLevel1Count] = useState(10);
@@ -150,18 +145,6 @@ export default function Home() {
                       <path d="M17.523 15.341c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9m-11.046 0c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9m11.4-6.02l1.97-3.41a.41.41 0 00-.71-.41l-2 3.46c-1.54-.7-3.26-1.09-5.14-1.09s-3.6.39-5.14 1.09l-2-3.46a.41.41 0 00-.71.41l1.97 3.41C2.69 11.08.34 14.53 0 18.5h24c-.34-3.97-2.69-7.42-6.12-9.18"/>
                     </svg>
                     <span>ऐप डाउनलोड करें और कमाई शुरू करें</span>
-                  </button>
-                  
-                  <button 
-                    onClick={() => setShowVideoModal(true)}
-                    className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-yellow-400/50 hover:bg-yellow-400/10 transition-all">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
-                    <span>वीडियो देखें</span>
                   </button>
                 </div>
                 
@@ -737,13 +720,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
-      {/* Video Modal */}
-      <VideoModal 
-        isOpen={showVideoModal}
-        onClose={() => setShowVideoModal(false)}
-        videoUrl={PROMO_VIDEO_URL}
-      />
     </main>
   );
 }
