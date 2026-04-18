@@ -75,10 +75,11 @@ export default function Home() {
     const level3Count = level2Count * inviteMultiplier;
     const total = level1Count + level2Count + level3Count;
     
+    // 只有代付任务有佣金
     const daily = Math.round(
-      level1Count * dailyTask * 0.01 +
-      level2Count * dailyTask * 0.005 +
-      level3Count * dailyTask * 0.003
+      level1Count * dailyTask * 0.008 +
+      level2Count * dailyTask * 0.004 +
+      level3Count * dailyTask * 0.002
     );
     
     setNetworkCount(`${total.toLocaleString()} लोग`);
@@ -238,7 +239,7 @@ export default function Home() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">प्राप्ति टास्क कमीशन</span>
-                      <span className="text-yellow-400 font-black text-2xl">1.0%</span>
+                      <span className="text-yellow-400 font-black text-2xl">0%</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">भुगतान टास्क कमीशन</span>
@@ -246,8 +247,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="mt-4 pt-4 border-t border-white/10">
-                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 टास्क पर</div>
-                    <div className="text-yellow-400 font-bold text-lg">₹10 कमाएं</div>
+                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 भुगतान टास्क पर</div>
+                    <div className="text-yellow-400 font-bold text-lg">₹8 कमाएं</div>
                   </div>
                 </div>
               </div>
@@ -268,7 +269,7 @@ export default function Home() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">प्राप्ति टास्क कमीशन</span>
-                      <span className="text-green-400 font-black text-2xl">0.5%</span>
+                      <span className="text-green-400 font-black text-2xl">0%</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">भुगतान टास्क कमीशन</span>
@@ -276,8 +277,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="mt-4 pt-4 border-t border-white/10">
-                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 टास्क पर</div>
-                    <div className="text-green-400 font-bold text-lg">₹5 कमाएं</div>
+                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 भुगतान टास्क पर</div>
+                    <div className="text-green-400 font-bold text-lg">₹4 कमाएं</div>
                   </div>
                 </div>
               </div>
@@ -298,7 +299,7 @@ export default function Home() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">प्राप्ति टास्क कमीशन</span>
-                      <span className="text-blue-400 font-black text-2xl">0.3%</span>
+                      <span className="text-blue-400 font-black text-2xl">0%</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">भुगतान टास्क कमीशन</span>
@@ -306,8 +307,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="mt-4 pt-4 border-t border-white/10">
-                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 टास्क पर</div>
-                    <div className="text-blue-400 font-bold text-lg">₹3 कमाएं</div>
+                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 भुगतान टास्क पर</div>
+                    <div className="text-blue-400 font-bold text-lg">₹2 कमाएं</div>
                   </div>
                 </div>
               </div>
@@ -323,9 +324,9 @@ export default function Home() {
                   <h4 className="text-white font-bold mb-2">कमाई का उदाहरण</h4>
                   <p className="text-gray-300 text-sm leading-relaxed">
                     आपने <span className="text-yellow-400 font-bold">A</span> को आमंत्रित किया, A ने <span className="text-green-400 font-bold">B</span> को, B ने <span className="text-blue-400 font-bold">C</span> को<br/>
-                    • A ने ₹1000 का प्राप्ति टास्क किया → आपको <span className="text-yellow-400 font-bold">₹10</span><br/>
-                    • B ने ₹1000 का प्राप्ति टास्क किया → आपको <span className="text-green-400 font-bold">₹5</span><br/>
-                    • C ने ₹1000 का प्राप्ति टास्क किया → आपको <span className="text-blue-400 font-bold">₹3</span><br/>
+                    • A ने ₹1000 का भुगतान टास्क किया → आपको <span className="text-yellow-400 font-bold">₹8</span><br/>
+                    • B ने ₹1000 का भुगतान टास्क किया → आपको <span className="text-green-400 font-bold">₹4</span><br/>
+                    • C ने ₹1000 का भुगतान टास्क किया → आपको <span className="text-blue-400 font-bold">₹2</span><br/>
                     <span className="text-white font-medium">पासिव इनकम: जब तक आपका नेटवर्क सक्रिय है, आप हर दिन कमीशन कमा रहे हैं!</span>
                   </p>
                 </div>
@@ -383,13 +384,13 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-gray-300">टास्क रिवार्ड + कमीशन प्राप्त करें</span>
+                    <span className="text-gray-300">टास्क रिवार्ड प्राप्त करें (कोई कमीशन नहीं)</span>
                   </div>
                 </div>
                 <div className="mt-6 pt-6 border-t border-white/10">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400">अनुमानित कमाई</span>
-                    <span className="text-green-400 font-bold text-xl">प्रति टास्क +1%~2%</span>
+                    <span className="text-green-400 font-bold text-xl">प्रति टास्क ₹50~200</span>
                   </div>
                 </div>
               </div>
