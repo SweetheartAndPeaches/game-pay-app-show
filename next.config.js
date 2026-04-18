@@ -10,14 +10,6 @@ const nextConfig = {
       },
     ],
   },
-  // Disable Turbopack
-  experimental: {
-    turbo: {},
-  },
-  // Force webpack for CSS
-  webpack: (config) => {
-    return config;
-  },
 };
 
 module.exports = nextConfig;
