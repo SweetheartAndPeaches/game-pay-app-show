@@ -1,6 +1,6 @@
 {
   "installCommand": "npm install --legacy-peer-deps",
-  "buildCommand": "npx next build --no-turbopack",
+  "buildCommand": "npx next build",
   "devCommand": "npx next dev",
   "framework": "nextjs"
 }
