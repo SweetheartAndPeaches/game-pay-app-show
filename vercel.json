@@ -1,6 +1,6 @@
 {
-  "buildCommand": "NEXT_DISABLE_TURBOPACK=1 npx next build",
-  "devCommand": "pnpm next dev",
-  "installCommand": "pnpm install",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
   "framework": "nextjs"
 }
