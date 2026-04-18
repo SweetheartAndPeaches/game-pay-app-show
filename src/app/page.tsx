@@ -134,7 +134,7 @@ export default function Home() {
                 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
                   दोस्तों को आमंत्रित करें<br/>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">तीन स्तरीय कमीशन कमाएं</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">कमीशन कमाएं</span>
                 </h1>
                 
                 <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-xl">
