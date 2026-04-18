@@ -1,9 +1,6 @@
 {
-  "buildCommand": "pnpm next build",
+  "buildCommand": "npx next build --no-turbo",
   "devCommand": "pnpm next dev",
   "installCommand": "pnpm install",
-  "framework": "nextjs",
-  "buildOptions": {
-    "turbo": false
-  }
+  "framework": "nextjs"
 }
