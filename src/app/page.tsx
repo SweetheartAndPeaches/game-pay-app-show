@@ -284,9 +284,9 @@ export default function Home() {
                   <h4 className="text-white font-bold mb-2">कमाई का उदाहरण</h4>
                   <p className="text-gray-300 text-sm leading-relaxed">
                     आपने <span className="text-yellow-400 font-bold">A</span> को आमंत्रित किया, A ने <span className="text-green-400 font-bold">B</span> को आमंत्रित किया<br/>
-                    • A ने ₹5000 का भुगतान टास्क किया → आपको <span className="text-yellow-400 font-bold">₹40</span><br/>
-                    • B ने ₹5000 का भुगतान टास्क किया → आपको <span className="text-green-400 font-bold">₹20</span><br/>
-                    <span className="text-white font-medium">केवल भुगतान टास्क से ही कमीशन मिलता है!</span>
+                    • A ने ₹5000 का भुगतान टास्क किया → आपको <span className="text-yellow-400 font-bold">₹40</span> <span className="text-green-400">(निकासी योग्य)</span><br/>
+                    • B ने ₹5000 का भुगतान टास्क किया → आपको <span className="text-green-400 font-bold">₹20</span> <span className="text-gray-500">(केवल दिखाई देता है)</span><br/>
+                    <span className="text-yellow-400 font-medium">केवल पहले स्तर का कमीशन निकाला जा सकता है!</span>
                   </p>
                 </div>
               </div>
