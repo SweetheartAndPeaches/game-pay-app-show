@@ -72,12 +72,14 @@ export default function Home() {
 
   const calculateEarnings = () => {
     const level2Count = level1Count * inviteMultiplier;
-    const total = level1Count + level2Count;
+    const level3Count = level2Count * inviteMultiplier;
+    const total = level1Count + level2Count + level3Count;
     
     // 只有代付任务有佣金
     const daily = Math.round(
       level1Count * dailyTask * 0.008 +
-      level2Count * dailyTask * 0.004
+      level2Count * dailyTask * 0.004 +
+      level3Count * dailyTask * 0.002
     );
     
     setNetworkCount(`${total.toLocaleString()} लोग`);
@@ -105,7 +107,7 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-4">
               <nav className="hidden md:flex items-center gap-6">
-                <a href="#commission" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">कमीशन सिस्टम</a>
+                <a href="#commission" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">तीन स्तरीय कमीशन</a>
                 <a href="#tasks" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">टास्क सिस्टम</a>
                 <a href="#calculator" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">कमाई कैलकुलेटर</a>
               </nav>
@@ -127,16 +129,16 @@ export default function Home() {
               <div className="flex-1 text-center lg:text-left">
                 <div className="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-4 py-2 mb-6">
                   <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
-                  <span className="text-yellow-400 text-sm font-medium">दो स्तरीय कमीशन · पासिव इनकम</span>
+                  <span className="text-yellow-400 text-sm font-medium">तीन स्तरीय वितरण · पासिव इनकम</span>
                 </div>
                 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
                   दोस्तों को आमंत्रित करें<br/>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">कमीशन कमाएं</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">तीन स्तरीय कमीशन कमाएं</span>
                 </h1>
                 
                 <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-xl">
-                  भुगतान टास्क से पैसे कमाएं, दोस्तों को आमंत्रित करके अतिरिक्त कमीशन पाएं! दो स्तरीय रेफरल सिस्टम से आपकी कमाई बढ़ेगी!
+                  टास्क पूरा करके पैसे कमाएं, दोस्तों को आमंत्रित करके कमीशन कमाएं! तीन स्तरीय वितरण प्रणाली से आपके दोस्तों के टास्क से भी आपको मिलेगा!
                 </p>
                 
                 <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
@@ -199,7 +201,7 @@ export default function Home() {
                     +₹1000 आज का कमीशन
                   </div>
                   <div className="absolute -left-4 bottom-1/4 bg-yellow-500 text-black text-sm font-bold py-2 px-4 rounded-full shadow-lg" style={{ animation: 'float 2s ease-in-out infinite 1s' }}>
-                    दो स्तरीय कमीशन
+                    तीन स्तरीय कमीशन
                   </div>
                 </div>
               </div>
@@ -212,15 +214,15 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-                दोस्तों को आमंत्रित करें <span className="text-yellow-400">कमीशन कमाएं</span>
+                तीन स्तरीय <span className="text-yellow-400">कमीशन प्रणाली</span>
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto">
-                आमंत्रित किए गए दोस्तों के भुगतान टास्क से आपको कमीशन मिलता है। जितने अधिक दोस्त, उतनी अधिक कमाई!
+                दोस्तों को आमंत्रित करें और तीन स्तरों तक कमीशन कमाएं। आपका नेटवर्क जितना सक्रिय, उतना अधिक पासिव इनकम!
               </p>
             </div>
             
             {/* Commission Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {/* Level 1 */}
               <div className="relative bg-gradient-to-br from-yellow-400/20 to-yellow-600/10 rounded-3xl p-6 border border-yellow-400/30 overflow-hidden group hover:border-yellow-400/50 transition-all">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl"></div>
@@ -235,6 +237,10 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">प्राप्ति टास्क कमीशन</span>
+                      <span className="text-yellow-400 font-black text-2xl">0%</span>
+                    </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">भुगतान टास्क कमीशन</span>
                       <span className="text-yellow-400 font-black text-2xl">0.8%</span>
@@ -257,10 +263,14 @@ export default function Home() {
                     </div>
                     <div>
                       <div className="text-white font-bold">दूसरा स्तर</div>
-                      <div className="text-gray-400 text-sm">रेफरल का रेफरल</div>
+                      <div className="text-gray-400 text-sm">अप्रत्यक्ष रेफरल</div>
                     </div>
                   </div>
                   <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">प्राप्ति टास्क कमीशन</span>
+                      <span className="text-green-400 font-black text-2xl">0%</span>
+                    </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">भुगतान टास्क कमीशन</span>
                       <span className="text-green-400 font-black text-2xl">0.4%</span>
@@ -272,10 +282,40 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+              
+              {/* Level 3 */}
+              <div className="relative bg-gradient-to-br from-blue-400/20 to-blue-600/10 rounded-3xl p-6 border border-blue-400/30 overflow-hidden group hover:border-blue-400/50 transition-all">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center overflow-hidden shadow-lg">
+                      <img src="/avatar-level3.jpeg" alt="Level 3" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <div className="text-white font-bold">तीसरा स्तर</div>
+                      <div className="text-gray-400 text-sm">दूर का रेफरल</div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">प्राप्ति टास्क कमीशन</span>
+                      <span className="text-blue-400 font-black text-2xl">0%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">भुगतान टास्क कमीशन</span>
+                      <span className="text-blue-400 font-black text-2xl">0.2%</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                    <div className="text-sm text-gray-400">उदाहरण: ₹1000 भुगतान टास्क पर</div>
+                    <div className="text-blue-400 font-bold text-lg">₹2 कमाएं</div>
+                  </div>
+                </div>
+              </div>
             </div>
             
             {/* Example */}
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10 max-w-2xl mx-auto">
+            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-yellow-400/20 flex items-center justify-center flex-shrink-0">
                   <span className="text-2xl">💡</span>
@@ -283,10 +323,11 @@ export default function Home() {
                 <div>
                   <h4 className="text-white font-bold mb-2">कमाई का उदाहरण</h4>
                   <p className="text-gray-300 text-sm leading-relaxed">
-                    आपने <span className="text-yellow-400 font-bold">A</span> को आमंत्रित किया, A ने <span className="text-green-400 font-bold">B</span> को आमंत्रित किया<br/>
-                    • A ने ₹5000 का भुगतान टास्क किया → आपको <span className="text-yellow-400 font-bold">₹40</span> <span className="text-green-400">(निकासी योग्य)</span><br/>
-                    • B ने ₹5000 का भुगतान टास्क किया → आपको <span className="text-green-400 font-bold">₹20</span> <span className="text-gray-500">(केवल दिखाई देता है)</span><br/>
-                    <span className="text-yellow-400 font-medium">केवल पहले स्तर का कमीशन निकाला जा सकता है!</span>
+                    आपने <span className="text-yellow-400 font-bold">A</span> को आमंत्रित किया, A ने <span className="text-green-400 font-bold">B</span> को, B ने <span className="text-blue-400 font-bold">C</span> को<br/>
+                    • A ने ₹1000 का भुगतान टास्क किया → आपको <span className="text-yellow-400 font-bold">₹8</span><br/>
+                    • B ने ₹1000 का भुगतान टास्क किया → आपको <span className="text-green-400 font-bold">₹4</span><br/>
+                    • C ने ₹1000 का भुगतान टास्क किया → आपको <span className="text-blue-400 font-bold">₹2</span><br/>
+                    <span className="text-white font-medium">पासिव इनकम: जब तक आपका नेटवर्क सक्रिय है, आप हर दिन कमीशन कमा रहे हैं!</span>
                   </p>
                 </div>
               </div>
