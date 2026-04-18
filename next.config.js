@@ -12,6 +12,14 @@ const nextConfig = {
       },
     ],
   },
+  // Disable Turbopack for CSS to fix PostCSS issues
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        // Disable CSS turbopack
+      },
+    },
+  },
 };
 
 module.exports = nextConfig;
