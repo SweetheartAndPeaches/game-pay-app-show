@@ -107,7 +107,7 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-4">
               <nav className="hidden md:flex items-center gap-6">
-                <a href="#commission" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">तीन स्तरीय कमीशन</a>
+                <a href="#commission" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">कमीशन</a>
                 <a href="#tasks" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">टास्क सिस्टम</a>
                 <a href="#calculator" className="text-gray-300 hover:text-yellow-400 transition-colors text-sm">कमाई कैलकुलेटर</a>
               </nav>
@@ -129,7 +129,7 @@ export default function Home() {
               <div className="flex-1 text-center lg:text-left">
                 <div className="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-4 py-2 mb-6">
                   <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
-                  <span className="text-yellow-400 text-sm font-medium">तीन स्तरीय वितरण · पासिव इनकम</span>
+                  <span className="text-yellow-400 text-sm font-medium">वितरण · पासिव इनकम</span>
                 </div>
                 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
@@ -138,7 +138,7 @@ export default function Home() {
                 </h1>
                 
                 <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-xl">
-                  टास्क पूरा करके पैसे कमाएं, दोस्तों को आमंत्रित करके कमीशन कमाएं! तीन स्तरीय वितरण प्रणाली से आपके दोस्तों के टास्क से भी आपको मिलेगा!
+                  टास्क पूरा करके पैसे कमाएं, दोस्तों को आमंत्रित करके कमीशन कमाएं! वितरण प्रणाली से आपके दोस्तों के टास्क से भी आपको मिलेगा!
                 </p>
                 
                 <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
@@ -201,7 +201,7 @@ export default function Home() {
                     +₹1000 आज का कमीशन
                   </div>
                   <div className="absolute -left-4 bottom-1/4 bg-yellow-500 text-black text-sm font-bold py-2 px-4 rounded-full shadow-lg" style={{ animation: 'float 2s ease-in-out infinite 1s' }}>
-                    तीन स्तरीय कमीशन
+                    कमीशन
                   </div>
                 </div>
               </div>
@@ -214,7 +214,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-                तीन स्तरीय <span className="text-yellow-400">कमीशन प्रणाली</span>
+                <span className="text-yellow-400">कमीशन प्रणाली</span>
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto">
                 दोस्तों को आमंत्रित करें और तीन स्तरों तक कमीशन कमाएं। आपका नेटवर्क जितना सक्रिय, उतना अधिक पासिव इनकम!
@@ -702,7 +702,7 @@ export default function Home() {
                 अपनी पासिव इनकम यात्रा शुरू करें
               </h2>
               <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-                आज ही 9INR डाउनलोड करें और तीन स्तरीय कमीशन प्रणाली से पासिव इनकम कमाना शुरू करें। अपने दोस्तों को आमंत्रित करें और उनकी कमाई से भी कमीशन पाएं!
+                आज ही 9INR डाउनलोड करें और कमीशन प्रणाली से पासिव इनकम कमाना शुरू करें। अपने दोस्तों को आमंत्रित करें और उनकी कमाई से भी कमीशन पाएं!
               </p>
               <button 
                 onClick={handleDownload}
