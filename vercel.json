@@ -1,5 +1,9 @@
 {
-  "buildCommand": "pnpm install && pnpm next build",
+  "buildCommand": "pnpm next build",
   "devCommand": "pnpm next dev",
-  "installCommand": "pnpm install"
+  "installCommand": "pnpm install",
+  "framework": "nextjs",
+  "buildOptions": {
+    "turbo": false
+  }
 }

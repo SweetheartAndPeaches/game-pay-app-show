@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // outputFileTracingRoot: path.resolve(__dirname, '../../'),  // Uncomment and add 'import path from "path"' if needed
-  /* config options here */
   allowedDevOrigins: ['*.dev.coze.site'],
   images: {
     remotePatterns: [
@@ -12,13 +10,13 @@ const nextConfig = {
       },
     ],
   },
-  // Disable Turbopack for CSS to fix PostCSS issues
+  // Disable Turbopack
   experimental: {
-    turbo: {
-      resolveAlias: {
-        // Disable CSS turbopack
-      },
-    },
+    turbo: {},
+  },
+  // Force webpack for CSS
+  webpack: (config) => {
+    return config;
   },
 };
 
