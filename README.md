@@ -1,363 +1,138 @@
-# projects
+# 9INR App Download Page
 
-这是一个基于 [Next.js 16](https://nextjs.org) + [shadcn/ui](https://ui.shadcn.com) 的全栈应用项目，由扣子编程 CLI 创建。
+## 项目简介 | Project Overview | परियोजना अवलोकन
 
-## 快速开始
+### 中文
+这是一个 9INR 软件下载推广页面，黑色背景搭配金黄色主题，包含 App 图标展示、下载功能、佣金体系、收益排行榜和 AI 客服。
 
-### 启动开发服务器
+### English
+This is a 9INR software download promotion page with a black background with golden theme, featuring app icon display, download function, commission system, earnings leaderboard, and AI customer service.
 
-```bash
-coze dev
-```
+### हिंदी
+यह 9INR सॉफ्टवेयर डाउनलोड प्रोमोशन पेज है जिसमें काला बैकग्राउंड और सुनहरा थीम है, जिसमें ऐप आइकॉन डिस्प्ले, डाउनलोड फ़ंक्शन, कमीशन सिस्टम, कमाई लीडरबोर्ड और AI कस्टमर सर्विस शामिल है।
 
-启动后，在浏览器中打开 [http://localhost:5000](http://localhost:5000) 查看应用。
+---
 
-开发服务器支持热更新，修改代码后页面会自动刷新。
+## 核心功能 | Key Features | मुख्य विशेषताएं
 
-### 构建生产版本
+### 1. App 图标展示 | App Icon Display | ऐप आइकॉन डिस्प्ले
+- 精美的 App 图标展示
+- 黑色背景配合金色边框动画
+- 吸引用户眼球
 
-```bash
-coze build
-```
+### 2. 下载功能 | Download Function | डाउनलोड फ़ंक्शन
+- 直接 APK 下载链接
+- 下载频率限制（每小时3次，间隔10秒）
+- 安全防护（禁用右键、F12、开发者工具）
 
-### 启动生产服务器
+### 3. 佣金体系 | Commission System | कमीशन सिस्टम
+- 一级佣金：1.8% + 0.2%（最高0.2%）
+- 二级佣金：1.6% + 0.1%（最高0.1%）
+- 三级佣金：1.4%
+- 一级佣金可提现，二级仅显示
 
-```bash
-coze start
-```
+### 4. 收益排行榜 | Earnings Leaderboard | कमाई लीडरबोर्ड
+- 展示Top 5 收益用户
+- 金色头像和数字动画效果
+- 激励用户推广
 
-## 项目结构
+### 5. AI 客服 | AI Customer Service | AI कस्टमर सर्विस
+- Raju 智能助手
+- 支持 Hindi/English 双语
+- 7x24 在线解答
+
+### 6. 佣金通知系统 | Commission Notification System | कमीशन नोटिफिकेशन सिस्टम
+- 实时佣金通知弹窗
+- 随机佣金通知
+- 吸引注意
+
+---
+
+## 技术栈 | Tech Stack | टेक स्टैक
+
+| 技术 | Technology | तकनीक |
+|------|------------|--------|
+| 框架 | Framework | फ्रेमवर्क | Next.js 16 (App Router) |
+| 核心 | Core | कोर | React 19 |
+| 语言 | Language | भाषा | TypeScript 5 |
+| UI组件 | UI Components | UI कंपोनेंट्स | shadcn/ui (Radix UI) |
+| 样式 | Styling | स्टाइलिंग | Tailwind CSS 4 |
+| 背景动画 | Background Animation | बैकग्राउंड एनिमेशन | Canvas 2D API |
+| AI对话 | AI Chat | AI चैट | NVIDIA API (z-ai/glm5) |
+| 包管理 | Package Manager | पैकेज मैनेजर | pnpm |
+
+---
+
+## 文件说明 | File Structure | फ़ाइल स्ट्रक्चर
 
 ```
 src/
-├── app/                      # Next.js App Router 目录
-│   ├── layout.tsx           # 根布局组件
-│   ├── page.tsx             # 首页
-│   ├── globals.css          # 全局样式（包含 shadcn 主题变量）
-│   └── [route]/             # 其他路由页面
-├── components/              # React 组件目录
-│   └── ui/                  # shadcn/ui 基础组件（优先使用）
-│       ├── button.tsx
-│       ├── card.tsx
-│       └── ...
-├── lib/                     # 工具函数库
-│   └── utils.ts            # cn() 等工具函数
-└── hooks/                   # 自定义 React Hooks（可选）
-
-server/
-├── index.ts                 # 自定义服务器入口
-├── tsconfig.json           # Server TypeScript 配置
-└── dist/                    # 编译输出目录（自动生成）
+├── app/
+│   ├── page.tsx              # 首页 | Home Page | होम पेज
+│   ├── layout.tsx            # 根布局 | Root Layout | रूट लेआउट
+│   ├── globals.css           # 全局样式 | Global Styles | ग्लोबल स्टाइल्स
+│   └── api/
+│       ├── chat/route.ts    # AI聊天 API | AI Chat API | AI चैट API
+│       └── video/route.ts   # 视频生成 API | Video Generate API | वीडियो जनरेट API
+├── components/
+│   ├── TriangleBackground.tsx  # 粒子背景 | Particle Background | पार्टिकल बैकग्राउंड
+│   ├── ChatWidget.tsx        # AI客服组件 | AI Customer Service | AI कस्टमर सर्विस
+│   ├── CommissionNotification.tsx # 佣金通知 | Commission Notification | कमीशन नोटिफिकेशन
+│   ├── VideoModal.tsx         # 视频弹窗（已移除）| Video Modal (Removed) | वीडियो मॉडल (हटा दिया)
+│   └── ui/                   # shadcn/ui 组件库 | Component Library | कंपोनेंट लाइब्रेरी
+├── hooks/
+│   └── useSecurity.ts         # 安全防护 | Security Protection | सुरक्षा सुरक्षा
+└── lib/
+    └── utils.ts               # 工具函数 | Utility Functions | यूटिलिटी फ़ंक्शंस
 ```
 
-## 核心开发规范
+---
 
-### 1. 组件开发
+## 部署说明 | Deployment Guide | डिप्लॉयमेंट गाइड
 
-**优先使用 shadcn/ui 基础组件**
-
-本项目已预装完整的 shadcn/ui 组件库，位于 `src/components/ui/` 目录。开发时应优先使用这些组件作为基础：
-
-```tsx
-// ✅ 推荐：使用 shadcn 基础组件
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-
-export default function MyComponent() {
-  return (
-    <Card>
-      <CardHeader>标题</CardHeader>
-      <CardContent>
-        <Input placeholder="输入内容" />
-        <Button>提交</Button>
-      </CardContent>
-    </Card>
-  );
-}
-```
-
-**可用的 shadcn 组件清单**
-
-- 表单：`button`, `input`, `textarea`, `select`, `checkbox`, `radio-group`, `switch`, `slider`
-- 布局：`card`, `separator`, `tabs`, `accordion`, `collapsible`, `scroll-area`
-- 反馈：`alert`, `alert-dialog`, `dialog`, `toast`, `sonner`, `progress`
-- 导航：`dropdown-menu`, `menubar`, `navigation-menu`, `context-menu`
-- 数据展示：`table`, `avatar`, `badge`, `hover-card`, `tooltip`, `popover`
-- 其他：`calendar`, `command`, `carousel`, `resizable`, `sidebar`
-
-详见 `src/components/ui/` 目录下的具体组件实现。
-
-### 2. 路由开发
-
-Next.js 使用文件系统路由，在 `src/app/` 目录下创建文件夹即可添加路由：
+### 开发环境 | Development Environment | डेवलपमेंट एनवायरमेंट
 
 ```bash
-# 创建新路由 /about
-src/app/about/page.tsx
-
-# 创建动态路由 /posts/[id]
-src/app/posts/[id]/page.tsx
-
-# 创建路由组（不影响 URL）
-src/app/(marketing)/about/page.tsx
-
-# 创建 API 路由
-src/app/api/users/route.ts
-```
-
-**页面组件示例**
-
-```tsx
-// src/app/about/page.tsx
-import { Button } from '@/components/ui/button';
-
-export const metadata = {
-  title: '关于我们',
-  description: '关于页面描述',
-};
-
-export default function AboutPage() {
-  return (
-    <div>
-      <h1>关于我们</h1>
-      <Button>了解更多</Button>
-    </div>
-  );
-}
-```
-
-**动态路由示例**
-
-```tsx
-// src/app/posts/[id]/page.tsx
-export default async function PostPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-
-  return <div>文章 ID: {id}</div>;
-}
-```
-
-**API 路由示例**
-
-```tsx
-// src/app/api/users/route.ts
-import { NextResponse } from 'next/server';
-
-export async function GET() {
-  return NextResponse.json({ users: [] });
-}
-
-export async function POST(request: Request) {
-  const body = await request.json();
-  return NextResponse.json({ success: true });
-}
-```
-
-### 3. 依赖管理
-
-**必须使用 pnpm 管理依赖**
-
-```bash
-# ✅ 安装依赖
+# 安装依赖 | Install Dependencies | डिपेंडेंसी इंस्टॉल करें
 pnpm install
 
-# ✅ 添加新依赖
-pnpm add package-name
+# 启动开发服务器 | Start Dev Server | डेव सर्वर शुरू करें
+pnpm dev
 
-# ✅ 添加开发依赖
-pnpm add -D package-name
-
-# ❌ 禁止使用 npm 或 yarn
-# npm install  # 错误！
-# yarn add     # 错误！
+# 构建 | Build | बिल्ड करें
+pnpm build
 ```
 
-项目已配置 `preinstall` 脚本，使用其他包管理器会报错。
+### 宝塔面板部署 | Baota Panel Deployment | बाओता पैनल डिप्लॉयमेंट
 
-### 4. 样式开发
+详见 `BAOTA_DEPLOY.md` 文件。
 
-**使用 Tailwind CSS v4**
+### Vercel 部署 | Vercel Deployment | Vercel डिप्लॉयमेंट
 
-本项目使用 Tailwind CSS v4 进行样式开发，并已配置 shadcn 主题变量。
+直接连接 GitHub 仓库自动部署。
 
-```tsx
-// 使用 Tailwind 类名
-<div className="flex items-center gap-4 p-4 rounded-lg bg-background">
-  <Button className="bg-primary text-primary-foreground">
-    主要按钮
-  </Button>
-</div>
+---
 
-// 使用 cn() 工具函数合并类名
-import { cn } from '@/lib/utils';
+## 下载链接 | Download Link | डाउनलोड लिंक
 
-<div className={cn(
-  "base-class",
-  condition && "conditional-class",
-  className
-)}>
-  内容
-</div>
-```
+- APK: `https://d1lpd5tr8ui3gv.cloudfront.net/web/9inr/9inr.apk`
 
-**主题变量**
+---
 
-主题变量定义在 `src/app/globals.css` 中，支持亮色/暗色模式：
+## 环境变量 | Environment Variables | एनवायरमेंट वेरिएबल्स
 
-- `--background`, `--foreground`
-- `--primary`, `--primary-foreground`
-- `--secondary`, `--secondary-foreground`
-- `--muted`, `--muted-foreground`
-- `--accent`, `--accent-foreground`
-- `--destructive`, `--destructive-foreground`
-- `--border`, `--input`, `--ring`
+| 变量名 | Variable Name | वेरिएबल नाम | 说明 | Description | विवरण |
+|--------|---------------|----------------|------|-------------|--------|
+| NVIDIA_API_KEY | NVIDIA API Key | NVIDIA API की | AI对话API密钥 | AI Chat API Key | AI चैट API की |
 
-### 5. 表单开发
+---
 
-推荐使用 `react-hook-form` + `zod` 进行表单开发：
+## 重要提示 | Important Notes | महत्वपूर्ण नोट्स
 
-```tsx
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+1. 必须使用 pnpm 作为包管理器
+2. 使用 Node.js 20+
+3. 开发端口必须使用 5000
 
-const formSchema = z.object({
-  username: z.string().min(2, '用户名至少 2 个字符'),
-  email: z.string().email('请输入有效的邮箱'),
-});
+---
 
-export default function MyForm() {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: { username: '', email: '' },
-  });
-
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-  };
-
-  return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <Input {...form.register('username')} />
-      <Input {...form.register('email')} />
-      <Button type="submit">提交</Button>
-    </form>
-  );
-}
-```
-
-### 6. 数据获取
-
-**服务端组件（推荐）**
-
-```tsx
-// src/app/posts/page.tsx
-async function getPosts() {
-  const res = await fetch('https://api.example.com/posts', {
-    cache: 'no-store', // 或 'force-cache'
-  });
-  return res.json();
-}
-
-export default async function PostsPage() {
-  const posts = await getPosts();
-
-  return (
-    <div>
-      {posts.map(post => (
-        <div key={post.id}>{post.title}</div>
-      ))}
-    </div>
-  );
-}
-```
-
-**客户端组件**
-
-```tsx
-'use client';
-
-import { useEffect, useState } from 'react';
-
-export default function ClientComponent() {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    fetch('/api/data')
-      .then(res => res.json())
-      .then(setData);
-  }, []);
-
-  return <div>{JSON.stringify(data)}</div>;
-}
-```
-
-## 常见开发场景
-
-### 添加新页面
-
-1. 在 `src/app/` 下创建文件夹和 `page.tsx`
-2. 使用 shadcn 组件构建 UI
-3. 根据需要添加 `layout.tsx` 和 `loading.tsx`
-
-### 创建业务组件
-
-1. 在 `src/components/` 下创建组件文件（非 UI 组件）
-2. 优先组合使用 `src/components/ui/` 中的基础组件
-3. 使用 TypeScript 定义 Props 类型
-
-### 添加全局状态
-
-推荐使用 React Context 或 Zustand：
-
-```tsx
-// src/lib/store.ts
-import { create } from 'zustand';
-
-interface Store {
-  count: number;
-  increment: () => void;
-}
-
-export const useStore = create<Store>((set) => ({
-  count: 0,
-  increment: () => set((state) => ({ count: state.count + 1 })),
-}));
-```
-
-### 集成数据库
-
-推荐使用 Prisma 或 Drizzle ORM，在 `src/lib/db.ts` 中配置。
-
-## 技术栈
-
-- **框架**: Next.js 16.1.1 (App Router)
-- **UI 组件**: shadcn/ui (基于 Radix UI)
-- **样式**: Tailwind CSS v4
-- **表单**: React Hook Form + Zod
-- **图标**: Lucide React
-- **字体**: Geist Sans & Geist Mono
-- **包管理器**: pnpm 9+
-- **TypeScript**: 5.x
-
-## 参考文档
-
-- [Next.js 官方文档](https://nextjs.org/docs)
-- [shadcn/ui 组件文档](https://ui.shadcn.com)
-- [Tailwind CSS 文档](https://tailwindcss.com/docs)
-- [React Hook Form](https://react-hook-form.com)
-
-## 重要提示
-
-1. **必须使用 pnpm** 作为包管理器
-2. **优先使用 shadcn/ui 组件** 而不是从零开发基础组件
-3. **遵循 Next.js App Router 规范**，正确区分服务端/客户端组件
-4. **使用 TypeScript** 进行类型安全开发
-5. **使用 `@/` 路径别名** 导入模块（已配置）
+© 2024 9INR Team
